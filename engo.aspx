@@ -105,12 +105,12 @@
                 	}
 				});
 				
-				$('#btnEngqno').click(function() {
+				/*$('#btnEngqno').click(function() {
 					if((q_cur==1 || q_cur==2) && !emp($('#txtEngqno').val())){
 						var t_date=q_date();
 						q_gt('engq', "where=^^noa='"+$('#txtEngqno').val()+"' and odate>='"+t_date+"' ^^", 0, 0, 0, "engq", r_accy);
 					}
-				});
+				});*/
 				
 				$('#btnEng').click(function() {
 				});
@@ -525,9 +525,9 @@
 							<input id="txtEngno"  type="text" class="txt" style="width:30%; float: left;"/>
 							<input id="txtEng"  type="text" class="txt" style="width:70%; float: left;"/>
 						</td>
-						<td><span> </span><a id='lblEngqno' class="lbl"> </a></td>
+						<!--<td><span> </span><a id='lblEngqno' class="lbl"> </a></td>
 						<td><input id="txtEngqno" type="text" class="txt c1"/></td>
-						<td><input id="btnEngqno" type="button" /></td>
+						<td><input id="btnEngqno" type="button" /></td>-->
 					</tr>
 					<tr>
 						<td><span> </span><a id='lblCust' class="lbl btn"> </a></td>
@@ -586,6 +586,7 @@
 						<td align="center" style="width:60px;"><a id='lblChase'> </a></td>
 						<td align="center" style="width:60px;"><a id='lblPrt'> </a></td>
 						<td align="center" style="width:60px;"><a id='lblOut'> </a></td>
+						<td align="center" style="width:60px;"><a id='lblRecord'> </a></td>
 					</tr>
 					<tr  style='background:#cad3ff;'>
 						<td ><input class="btn"  id="btnMinus.*" type="button" value='－' style=" font-weight: bold;" /></td>
