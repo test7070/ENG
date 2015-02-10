@@ -32,7 +32,7 @@
             brwNowPage = 0;
             brwKey = 'noa';
             q_desc = 1;
-            brwCount2 = 5;
+            brwCount2 = 10;
 
             aPop = new Array();
 			
@@ -303,7 +303,7 @@
             }
             .dview {
                 float: left;
-                width: 150px;
+                width: 350px;
                 border-width: 0px;
             }
             .tview {
@@ -461,10 +461,14 @@
 					<tr>
 						<td style="width:20px; color:black;"><a id='vewChk'> </a></td>
 						<td style="width:100px; color:black;"><a id='vewDatea'> </a></td>
+						<td style="width:100px; color:black;"><a id='vewNoa'> </a></td>
+						<td style="width:100px; color:black;"><a id='vewNick'> </a></td>
 					</tr>
 					<tr>
 						<td><input id="chkBrow.*" type="checkbox" style=''/></td>
 						<td id='datea' style="text-align: center;">~datea</td>
+						<td id='noa' style="text-align: center;">~noa</td>
+						<td id='nick' style="text-align: center;">~nick</td>
 					</tr>
 				</table>
 			</div>
@@ -518,7 +522,7 @@
 				</table>
 			</div>
 		</div>
-		<div class='dbbs'>
+		<div class='dbbs' style="display:none;">
 			<table id="tbbs" class='tbbs'>
 				<tr style='color:white; background:#003366;' >
 					<td style="width:20px;">
