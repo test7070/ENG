@@ -16,7 +16,7 @@
 		<script type="text/javascript">
 
             q_tables = 't';
-            var q_name = "eng2";
+            var q_name = "eng3";
             var q_readonly = ['txtNoa','txtWorker','txtWorker2'];
             var q_readonlys = [];
             var q_readonlyt = [];
@@ -98,7 +98,7 @@
             function _btnSeek() {
                 if (q_cur > 0 && q_cur < 4)
                     return;
-                q_box('eng2_s.aspx', q_name + '_s', "550px", "440px", q_getMsg("popSeek"));
+                q_box('eng3_s.aspx', q_name + '_s', "550px", "440px", q_getMsg("popSeek"));
             }
 
             function btnIns() {
@@ -114,7 +114,7 @@
             }
 
             function btnPrint() {
-                q_box("z_eng2p.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'eng2', "95%", "95%", m_print);
+                q_box("z_eng3p.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'eng2', "95%", "95%", m_print);
             }
 
             function btnOk() {
@@ -130,7 +130,7 @@
                 var t_noa = trim($('#txtNoa').val());
                 var t_date = trim($('#txtDatea').val());
                 if (t_noa.length == 0 || t_noa == "AUTO")
-                    q_gtnoa(q_name, replaceAll(q_getPara('sys.key_eng2') + (t_date.length == 0 ? q_date() : t_date), '/', ''));
+                    q_gtnoa(q_name, replaceAll(q_getPara('sys.key_eng3') + (t_date.length == 0 ? q_date() : t_date), '/', ''));
                 else
                     wrServer(t_noa);
 
@@ -446,10 +446,10 @@
 						<td colspan="2"><input id="txtEng"  type="text"  class="txt c1"/></td>
 					</tr>
 					<tr>
-						<td><span> </span><a id="lblCustno" class="lbl"> </a></td>
-						<td ><input id="txtCustno"  type="text" class="txt c1"/></td>
-						<td><span> </span><a id="lblCust" class="lbl"> </a></td>
-						<td colspan="2"><input id="txtCust"  type="text"  class="txt c1"/></td>
+						<td><span> </span><a id="lblTggno" class="lbl"> </a></td>
+						<td ><input id="txtTggno"  type="text" class="txt c1"/></td>
+						<td><span> </span><a id="lblTgg" class="lbl"> </a></td>
+						<td colspan="2"><input id="txtTgg"  type="text"  class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblMemo" class="lbl"> </a></td>
