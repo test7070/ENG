@@ -529,6 +529,7 @@
 						<input id="btnPlus" type="button" style="font-size: medium; font-weight: bold;" value="＋"/>
 					</td>
 					<td style="width:20px;"> </td>
+					<td style="width:200px; text-align: center;">工程項目</td>
 				</tr>
 				<tr  style='background:#cad3ff;'>
 					<td align="center">
