@@ -199,7 +199,11 @@
             function sum() {
                 if (!(q_cur == 1 || q_cur == 2))
                     return;
-
+				var t_total = 0;
+				for(var i=0;i<q_bbsCount;i++){
+					t_total += q_float('txtMoney_'+i);
+				}
+				$('#txtTotal').val(q_tr(t_total,0));
             }
 
             function q_appendData(t_Table) {
@@ -450,6 +454,12 @@
 						<td ><input id="txtCustno"  type="text" class="txt c1"/></td>
 						<td><span> </span><a id="lblCust" class="lbl"> </a></td>
 						<td colspan="2"><input id="txtCust"  type="text"  class="txt c1"/></td>
+					</tr>
+					<tr>
+						<td> </td>
+						<td> </td>
+						<td><span> </span><a id="lblTotal" class="lbl"> </a></td>
+						<td ><input id="txtTotal"  type="text" class="txt c1 num"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblMemo" class="lbl"> </a></td>
