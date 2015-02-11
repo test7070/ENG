@@ -522,7 +522,7 @@
 				</table>
 			</div>
 		</div>
-		<div class='dbbs' style="display:none;">
+		<div class='dbbs'>
 			<table id="tbbs" class='tbbs'>
 				<tr style='color:white; background:#003366;' >
 					<td style="width:20px;">
@@ -540,7 +540,7 @@
 			</table>
 		</div>
 		<input id="q_sys" type="hidden" />
-		<div id="dbbt" style="display:none;">
+		<div id="dbbt">
 			<table id="tbbt">
 				<tbody>
 					<tr class="head" style="color:white; background:#003366;">
