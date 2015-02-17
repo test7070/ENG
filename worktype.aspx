@@ -49,7 +49,7 @@
                     if ($(this).val().length > 0) {
                         //if((/^(\w+|\w+\u002D\w+)$/g).test($(this).val())){
                         t_where = "where=^^ noa='" + $(this).val() + "'^^";
-                        q_gt('part', t_where, 0, 0, 0, "checkPartno_change", r_accy);
+                        q_gt('worktype', t_where, 0, 0, 0, "checkWorkTypeno_change");
                         /*}else{
                          Lock();
                          alert('編號只允許 英文(A-Z)、數字(0-9)及dash(-)。'+String.fromCharCode(13)+'EX: A01、A01-001');
@@ -71,16 +71,16 @@
 
             function q_gtPost(t_name) {
                 switch (t_name) {
-                    case 'checkPartno_change':
-                        var as = _q_appendData("part", "", true);
+                    case 'checkWorkTypeno_change':
+                        var as = _q_appendData("worktype", "", true);
                         if (as[0] != undefined) {
-                            alert('已存在 ' + as[0].noa + ' ' + as[0].part);
+                            alert('已存在 ' + as[0].noa + ' ' + as[0].wname);
                         }
                         break;
-                    case 'checkPartno_btnOk':
-                        var as = _q_appendData("part", "", true);
+                    case "checkWorkTypeno_btnOk":
+                        var as = _q_appendData("worktype", "", true);
                         if (as[0] != undefined) {
-                            alert('已存在 ' + as[0].noa + ' ' + as[0].part);
+                            alert('已存在 ' + as[0].noa + ' ' + as[0].wname);
                             Unlock();
                             return;
                         } else {
@@ -97,7 +97,7 @@
             function _btnSeek() {
                 if (q_cur > 0 && q_cur < 4)// 1-3
                     return;
-                q_box('part_s.aspx', q_name + '_s', "500px", "300px", q_getMsg("popSeek"));
+                q_box('worktype_s.aspx', q_name + '_s', "500px", "300px", q_getMsg("popSeek"));
             }
 
             function btnIns() {
@@ -111,7 +111,7 @@
                     return;
                 _btnModi();
                 refreshBbm();
-                $('#txtPart').focus();
+                $('#txtWname').focus();
             }
 
             function btnPrint() {
@@ -135,7 +135,7 @@
                  } */
                 if (q_cur == 1) {
                     t_where = "where=^^ noa='" + $('#txtNoa').val() + "'^^";
-                    q_gt('part', t_where, 0, 0, 0, "checkPartno_btnOk", r_accy);
+                    q_gt('worktype', t_where, 0, 0, 0, "checkWorkTypeno_btnOk");
                 } else {
                     wrServer($('#txtNoa').val());
                 }
@@ -375,7 +375,7 @@
 					<tr>
 						<td class="td1"><span> </span><a id='lblwName' class="lbl"></a></td>
 						<td class="td2">
-						<input id="txtwName"  type="text" class="txt c1"/>
+						<input id="txtWname"  type="text" class="txt c1"/>
 						</td>
 						<td class="td3"></td>
 						<td class="td4"></td>
@@ -383,7 +383,7 @@
 					<tr>
 						<td class="td1"><span> </span><a id='lblwNick' class="lbl"></a></td>
 						<td class="td2">
-						<input id="txtwNick"  type="text" class="txt c1"/>
+						<input id="txtWnick"  type="text" class="txt c1"/>
 						</td>
 						<td class="td3"></td>
 						<td class="td4"></td>

@@ -34,7 +34,9 @@
             q_desc = 1;
             brwCount2 = 10;
 
-            aPop = new Array();
+            aPop = new Array(
+            	['txtCustno','lblCustno','cust','noa,nick','txtCustno,txtCust','cust_b.aspx']
+            );
 			
 			var z_mech = new Array();
             $(document).ready(function() {
