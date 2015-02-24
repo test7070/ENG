@@ -25,7 +25,7 @@
             var q_readonly = ['txtNoa', 'txtWorker', 'txtWorker2'];
             var q_readonlys = [];
             var q_readonlyt = [];
-            var bbmNum = [['txtMoney', 15, 0, 1],['txtUmoney', 15, 0, 1],['txttxtProfit', 15, 0, 1]];
+            var bbmNum = [['txtMoney', 15, 0, 1],['txtUmoney', 15, 0, 1],['txtProfit', 15, 0, 1]];
             var bbsNum = [['txtMount', 10, 2, 1], ['txtPrice', 10, 2, 1], ['txtMoney', 15, 0, 1],['txtUmount', 10, 2, 1], ['txtUprice', 10, 2, 1], ['txtUmoney', 15, 0, 1]];
             var bbtNum = [];
             var bbmMask = [];
@@ -117,49 +117,7 @@
 				
 				$('#btnEng').click(function() {
 				});
-				$('#btnFile').change(function(e){
-					event.stopPropagation(); 
-				    event.preventDefault();
-					file = $('#btnFile')[0].files[0];
-					if(file){
-						fr = new FileReader();
-						fr.fileName = file.name;
-					    fr.readAsDataURL(file);
-					    fr.onprogress = function(e){
-					    	 if ( e.lengthComputable ) { 
-		                        var per = Math.round( (e.loaded * 100) / e.total) ; 
-		                        $('#FileList').children().last().find('progress').eq(0).attr('value',per);
-		                    }; 
-					    }
-					    fr.onloadstart = function(e){
-					    	$('#FileList').append('<div styly="width:100%;"><progress id="progress" max="100" value="0" ></progress><progress id="progress" max="100" value="0" ></progress><a>'+fr.fileName+'</a></div>');
-					    	$('#btnFile').attr('disabled','disabled');
-					    }
-					    fr.onloadend = function(e){
-					    	$('#FileList').children().last().find('progress').eq(0).attr('value',100);
-					    	
-							console.log(fr.fileName+':'+fr.result.length);
-					    	var oReq = new XMLHttpRequest();
-					    	
-					    	oReq.upload.addEventListener("progress",function(e) {
-						    	if (e.lengthComputable) {
-							    	percentComplete = Math.round((e.loaded / e.total) * 100,0);
-							     	$('#FileList').children().last().find('progress').eq(1).attr('value',percentComplete);
-							    }
-							}, false);
-					    	oReq.upload.addEventListener("load",function(e) {
-							    $('#btnFile').val('');
-							}, false);
-
-							oReq.open("POST", 'engo_upload.aspx', true);
-							oReq.setRequestHeader("Content-type", "text/plain");
-						    oReq.timeout = 60000;
-						    oReq.ontimeout = function () { alert("Timed out!!!"); }
-							oReq.setRequestHeader("FileName", escape(fr.fileName));
-							oReq.send(fr.result);
-					    };
-					}
-				});
+				
             }
 
             function q_boxClose(s2) {
@@ -266,6 +224,86 @@
                     }
                 }
                 _bbsAssign();
+            }
+            var guid = (function() {
+				function s4() {return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);}
+				return function() {return s4() + s4() + '-' + s4() + '-' + s4() + '-' +s4() + '-' + s4() + s4() + s4();};
+			})();
+            function bbtAssign() {
+                for (var i = 0; i < q_bbtCount; i++) {
+                    $('#lblNo__' + i).text(i + 1);
+                    if (!$('#btnMinut__' + i).hasClass('isAssign')) {
+                    	$('#txtFileName__' + i).bind('contextmenu', function(e) {
+                            /*滑鼠右鍵*/
+                            e.preventDefault();
+                            var n = $(this).attr('id').replace('txtFileName__', '');
+                        	
+                        	oReq.open("POST", 'engo_upload.aspx', true);
+							oReq.setRequestHeader("Content-type", "text/plain");
+						    oReq.timeout = 60000;
+						    oReq.ontimeout = function () { alert("Timed out!!!"); }
+							oReq.setRequestHeader("FileName", escape($('#txtFileName__'+n).val()));
+							oReq.setRequestHeader("TempName", escape($('#txtTempName__'+n).val()));
+							
+						//	oReq.send(fr.result);
+                        
+                        });
+                    	
+                    	$('#btnUpload__'+i).change(function(e){
+							event.stopPropagation(); 
+						    event.preventDefault();
+						    var t_n = $(this).attr('id').replace('btnUpload__','');
+							file = $(this)[0].files[0];
+							if(file){
+								var ext = '';
+								var extindex = file.name.lastIndexOf('.');
+								if(extindex>0){
+									ext = file.name.substring(extindex,file.name.length);
+								}
+								$('#txtFilename__'+t_n).val(file.name);
+								$('#txtTempname__'+t_n).val(guid()+ext);
+								
+								fr = new FileReader();
+								fr.fileName = $('#txtTempname__'+t_n).val();
+							    fr.readAsDataURL(file);
+							    fr.onprogress = function(e){
+							    	 if ( e.lengthComputable ) { 
+				                        var per = Math.round( (e.loaded * 100) / e.total) ; 
+				                        $('#FileList').children().last().find('progress').eq(0).attr('value',per);
+				                    }; 
+							    }
+							    fr.onloadstart = function(e){
+							    	$('#FileList').append('<div styly="width:100%;"><progress id="progress" max="100" value="0" ></progress><progress id="progress" max="100" value="0" ></progress><a>'+fr.fileName+'</a></div>');
+							    	$('.btnUpload').attr('disabled','disabled');
+							    }
+							    fr.onloadend = function(e){
+							    	$('#FileList').children().last().find('progress').eq(0).attr('value',100);
+							    	
+									console.log(fr.fileName+':'+fr.result.length);
+							    	var oReq = new XMLHttpRequest();
+							    	
+							    	oReq.upload.addEventListener("progress",function(e) {
+								    	if (e.lengthComputable) {
+									    	percentComplete = Math.round((e.loaded / e.total) * 100,0);
+									     	$('#FileList').children().last().find('progress').eq(1).attr('value',percentComplete);
+									    }
+									}, false);
+							    	oReq.upload.addEventListener("load",function(e) {
+									    $('.btnUpload').val('');
+									}, false);
+		
+									oReq.open("POST", 'engo_upload.aspx', true);
+									oReq.setRequestHeader("Content-type", "text/plain");
+								    oReq.timeout = 60000;
+								    oReq.ontimeout = function () { alert("Timed out!!!"); }
+									oReq.setRequestHeader("FileName", escape(fr.fileName));
+									oReq.send(fr.result);
+							    };
+							}
+						});
+                    }
+                }
+                _bbtAssign();
             }
 
             function btnIns() {
@@ -729,6 +767,7 @@
 					<td>
 						<input class="txt" id="txtFilename..*" type="text" style="width:95%;"/>
 						<input class="txt" id="txtTempname..*" type="text" style="width:95%;"/>
+						<input type="file" id="btnUpload..*" value="上傳" class="btnUpload"/>
 					</td>
 					<td><input class="txt" id="txtMemo..*" type="text" style="width:95%;" /></td>
 				</tr>
