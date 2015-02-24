@@ -20,14 +20,17 @@
             }
 
             q_desc = 1;
-            q_tables = 's';
+            q_tables = 't';
             var q_name = "engo";
             var q_readonly = ['txtNoa', 'txtWorker', 'txtWorker2'];
             var q_readonlys = [];
+            var q_readonlyt = [];
             var bbmNum = [['txtMoney', 15, 0, 1],['txtUmoney', 15, 0, 1],['txttxtProfit', 15, 0, 1]];
             var bbsNum = [['txtMount', 10, 2, 1], ['txtPrice', 10, 2, 1], ['txtMoney', 15, 0, 1],['txtUmount', 10, 2, 1], ['txtUprice', 10, 2, 1], ['txtUmoney', 15, 0, 1]];
+            var bbtNum = [];
             var bbmMask = [];
             var bbsMask = [];
+            var bbtMask = [];
             q_sqlCount = 6;
             brwCount = 6;
             brwList = [];
@@ -38,6 +41,7 @@
             $(document).ready(function() {
                 bbmKey = ['noa'];
                 bbsKey = ['noa', 'no2'];
+                bbtKey = ['noa', 'noq'];
                 q_brwCount();
                 q_gt(q_name, q_content, q_sqlCount, 1, 0, '');
             });
@@ -503,7 +507,7 @@
                 font-size: medium;
             }
             #dbbt {
-                width: 1500px;
+                width: 600px;
             }
             #tbbt {
                 margin: 0;
@@ -706,5 +710,29 @@
 			</div>
 		</div>
 		<input id="q_sys" type="hidden" />
+		<div id="dbbt">
+			<table id="tbbt">
+				<tr class="head" style="color:white; background:#003366;">
+					<td style="width:20px;">
+					<input id="btnPlut" type="button" style="font-size: medium; font-weight: bold;" value="＋"/>
+					</td>
+					<td style="width:20px;"></td>
+					<td style="width:150px; text-align: center;">檔名</td>
+					<td style="width:200px; text-align: center;">備註</td>
+				</tr>
+				<tr>
+					<td>
+						<input id="btnMinut..*"  type="button" style="font-size: medium; font-weight: bold;" value="－"/>
+						<input class="txt" id="txtNoq..*" type="text" style="display: none;"/>
+					</td>
+					<td><a id="lblNo..*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
+					<td>
+						<input class="txt" id="txtFilename..*" type="text" style="width:95%;"/>
+						<input class="txt" id="txtTempname..*" type="text" style="width:95%;"/>
+					</td>
+					<td><input class="txt" id="txtMemo..*" type="text" style="width:95%;" /></td>
+				</tr>
+			</table>
+		</div>
 	</body>
 </html>
