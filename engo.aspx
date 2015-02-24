@@ -59,7 +59,6 @@
                 $('#txtProfit').val(t_total-tt_utotal);
             };
 
-            //////////////////   end Ready
             function main() {
                 if (dataErr) {
                     dataErr = false;
@@ -114,9 +113,52 @@
 				
 				$('#btnEng').click(function() {
 				});
+				$('#btnFile').change(function(e){
+					event.stopPropagation(); 
+				    event.preventDefault();
+					file = $('#btnFile')[0].files[0];
+					if(file){
+						fr = new FileReader();
+						fr.fileName = file.name;
+					    fr.readAsDataURL(file);
+					    fr.onprogress = function(e){
+					    	 if ( e.lengthComputable ) { 
+		                        var per = Math.round( (e.loaded * 100) / e.total) ; 
+		                        $('#FileList').children().last().find('progress').eq(0).attr('value',per);
+		                    }; 
+					    }
+					    fr.onloadstart = function(e){
+					    	$('#FileList').append('<div styly="width:100%;"><progress id="progress" max="100" value="0" ></progress><progress id="progress" max="100" value="0" ></progress><a>'+fr.fileName+'</a></div>');
+					    	$('#btnFile').attr('disabled','disabled');
+					    }
+					    fr.onloadend = function(e){
+					    	$('#FileList').children().last().find('progress').eq(0).attr('value',100);
+					    	
+							console.log(fr.fileName+':'+fr.result.length);
+					    	var oReq = new XMLHttpRequest();
+					    	
+					    	oReq.upload.addEventListener("progress",function(e) {
+						    	if (e.lengthComputable) {
+							    	percentComplete = Math.round((e.loaded / e.total) * 100,0);
+							     	$('#FileList').children().last().find('progress').eq(1).attr('value',percentComplete);
+							    }
+							}, false);
+					    	oReq.upload.addEventListener("load",function(e) {
+							    $('#btnFile').val('');
+							}, false);
+
+							oReq.open("POST", 'engo_upload.aspx', true);
+							oReq.setRequestHeader("Content-type", "text/plain");
+						    oReq.timeout = 60000;
+						    oReq.ontimeout = function () { alert("Timed out!!!"); }
+							oReq.setRequestHeader("FileName", escape(fr.fileName));
+							oReq.send(fr.result);
+					    };
+					}
+				});
             }
 
-            function q_boxClose(s2) {///   q_boxClose 2/4
+            function q_boxClose(s2) {
                 var ret;
                 switch (b_pop) {
                     case q_name + '_s':
@@ -340,30 +382,34 @@
 			}*/
 		</script>
 		<style type="text/css">
+            #dmain {
+                overflow: visible;
+            }
             .dview {
                 float: left;
-                width: 38%;
+                width: 300px;
+                border-width: 0px;
             }
             .tview {
-                margin: 0;
-                padding: 2px;
-                border: 1px black double;
-                border-spacing: 0;
+                border: 5px solid gray;
                 font-size: medium;
-                background-color: #FFFF66;
-                color: blue;
-                width: 100%;
+                background-color: black;
+            }
+            .tview tr {
+                height: 30%;
             }
             .tview td {
                 padding: 2px;
                 text-align: center;
-                border: 1px black solid;
+                border-width: 0px;
+                background-color: #FFFF66;
+                color: blue;
             }
             .dbbm {
                 float: left;
-                width: 62%;
-                margin: -1px;
-                border: 1px black solid;
+                width: 70%;
+                /*margin: -1px;
+                 border: 1px black solid;*/
                 border-radius: 5px;
             }
             .tbbm {
@@ -380,10 +426,10 @@
                 height: 35px;
             }
             .tbbm tr td {
-                /*width: 9%;*/
+                width: 14%;
             }
             .tbbm .tdZ {
-                width: 2%;
+                width: 1%;
             }
             .tbbm tr td span {
                 float: right;
@@ -405,7 +451,11 @@
                 color: #FF8F19;
             }
             .txt.c1 {
-                width: 98%;
+                width: 100%;
+                float: left;
+            }
+            .txt.c2 {
+                width: 130%;
                 float: left;
             }
             .txt.num {
@@ -421,32 +471,66 @@
                 margin: -1px;
                 float: left;
             }
-            .tbbm td input[type="button"] {
-                float: left;
+            input[type="text"], input[type="button"] {
+                font-size: medium;
             }
-            .tbbm select {
+            .dbbs {
+                width: 1700px;
+            }
+            .dbbs .tbbs {
+                margin: 0;
+                padding: 2px;
+                border: 2px lightgrey double;
+                border-spacing: 1;
+                border-collapse: collapse;
+                font-size: medium;
+                color: blue;
+                /*background: #cad3ff;*/
+                background: lightgrey;
+                width: 1700px;
+            }
+            .dbbs .tbbs tr {
+                height: 35px;
+            }
+            .dbbs .tbbs tr td {
+                text-align: center;
+                border: 2px lightgrey double;
+            }
+            .dbbs .tbbs select {
                 border-width: 1px;
                 padding: 0px;
                 margin: -1px;
                 font-size: medium;
             }
-            .dbbs {
-                float: left;
+            #dbbt {
+                width: 1500px;
+            }
+            #tbbt {
+                margin: 0;
+                padding: 2px;
+                border: 2px pink double;
+                border-spacing: 1;
+                border-collapse: collapse;
+                font-size: medium;
+                color: blue;
+                background: pink;
                 width: 100%;
             }
-            .tbbs a {
-                font-size: medium;
+            #tbbt tr {
+                height: 35px;
             }
-            .num {
-                text-align: right;
+            #tbbt tr td {
+                text-align: center;
+                border: 2px pink double;
             }
-            .tbbs tr.error input[type="text"] {
-                color: red;
+            #InterestWindows {
+                display: none;
+                width: 20%;
+                background-color: #cad3ff;
+                border: 5px solid gray;
+                position: absolute;
+                z-index: 50;
             }
-            input[type="text"], input[type="button"] {
-                font-size: medium;
-            }
-
 		</style>
 	</head>
 	<body ondragstart="return false" draggable="false"
@@ -508,7 +592,6 @@
 						<td> </td>
 						<td> </td>
 						<td> </td>
-						<td> </td>
 						<td class="tdZ"> </td>
 					</tr>
 					<tr>
@@ -556,13 +639,20 @@
 					</tr>
 					<tr>
 						<td><span> </span><a id='lblMemo' class="lbl"> </a></td>
-						<td colspan="7"><textarea id="txtMemo" rows="5" cols="10" class="txt c1"> </textarea></td>
+						<td colspan="6"><textarea id="txtMemo" rows="5" cols="10" class="txt c1"> </textarea></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id='lblWorker' class="lbl"> </a></td>
 						<td><input id="txtWorker"  type="text" class="txt c1" /></td>
 						<td><span> </span><a id='lblWorker2' class="lbl"> </a></td>
 						<td><input id="txtWorker2"  type="text" class="txt c1" /></td>
+					</tr>
+					<tr>
+						<td><input id="txtFiles" type="text" class="txt c1"/></td>
+						<td><input type="file" id="btnFile" value="上傳"/></td>
+					</tr>
+					<tr>
+						<td colspan="7"><div style="width:100%;" id="FileList"> </div></td>
 					</tr>
 				</table>
 			</div>
@@ -594,22 +684,22 @@
 						<td ><input id="txtNos.*" type="text"  class="txt c1"/></td>
 						<td>
 							<input type="text" id="txtNo2.*"  style="display: none;"/>
-							<input type="text" id="txtProductno.*"  style="width:90%; float:left;"/>
-							<input class="btn"  id="btnProduct.*" type="button" style="width: 1%" />
+							<input type="text" id="txtProductno.*"  style="width:95%; float:left;"/>
+							<input class="btn"  id="btnProduct.*" type="button" style="display:none;" />
 						</td>
-						<td ><input id="txtProduct.*" type="text"  class="txt c1"/></td>
-						<td ><input id="txtUnit.*" type="text"  class="txt c1"/></td>
-						<td ><input id="txtMount.*" type="text"  class="txt num c1"/></td>
-						<td ><input id="txtPrice.*" type="text" class="txt num c1" /></td>
-						<td ><input id="txtMoney.*" type="text" class="txt num c1" /></td>
-						<td ><input id="txtUmount.*" type="text"  class="txt num c1"/></td>
-						<td ><input id="txtUprice.*" type="text" class="txt num c1" /></td>
-						<td ><input id="txtUmoney.*" type="text" class="txt num c1" /></td>
-						<td ><input id="txtBdate.*" type="text"  class="txt c1"/></td>
-						<td ><input id="txtEdate.*" type="text"  class="txt c1"/></td>
-						<td ><input id="txtChase.*" type="text"  class="txt c1"/></td>
-						<td ><input id="txtPrt.*" type="text"  class="txt c1"/></td>
-						<td ><input id="txtOut.*" type="text"  class="txt c1"/></td>
+						<td ><input id="txtProduct.*" type="text" class="txt" style="width:95%"/></td>
+						<td ><input id="txtUnit.*" type="text"  class="txt" style="width:95%"/></td>
+						<td ><input id="txtMount.*" type="text" class="txt num" style="width:95%"/></td>
+						<td ><input id="txtPrice.*" type="text" class="txt num" style="width:95%"/></td>
+						<td ><input id="txtMoney.*" type="text" class="txt num" style="width:95%"/></td>
+						<td ><input id="txtUmount.*" type="text" class="txt num" style="width:95%"/></td>
+						<td ><input id="txtUprice.*" type="text" class="txt num" style="width:95%"/></td>
+						<td ><input id="txtUmoney.*" type="text" class="txt num" style="width:95%"/></td>
+						<td ><input id="txtBdate.*" type="text" class="txt" style="width:95%"/></td>
+						<td ><input id="txtEdate.*" type="text" class="txt" style="width:95%"/></td>
+						<td ><input id="txtChase.*" type="text" class="txt" style="width:95%"/></td>
+						<td ><input id="txtPrt.*" type="text" class="txt" style="width:95%"/></td>
+						<td ><input id="txtOut.*" type="text" class="txt" style="width:95%"/></td>
 						<td ><input class="btn"  id="btnRecord.*" type="button" style="width: 1%" /></td>
 					</tr>
 				</table>
