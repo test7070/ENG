@@ -227,7 +227,8 @@
             }
             var guid = (function() {
 				function s4() {return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);}
-				return function() {return s4() + s4() + '-' + s4() + '-' + s4() + '-' +s4() + '-' + s4() + s4() + s4();};
+				//return function() {return s4() + s4() + '-' + s4() + '-' + s4() + '-' +s4() + '-' + s4() + s4() + s4();};
+				return function() {return s4() + s4() + s4() + s4();};
 			})();
             function bbtAssign() {
                 for (var i = 0; i < q_bbtCount; i++) {
@@ -292,7 +293,7 @@
 									    alert("資料上傳發生錯誤!");
 									}, false);
 									
-									oReq.timeout = 0;
+									oReq.timeout = 360000;
 								    oReq.ontimeout = function () { alert("Timed out!!!"); }
 									oReq.open("POST", 'engo_upload.aspx', true);
 									oReq.setRequestHeader("Content-type", "text/plain");
