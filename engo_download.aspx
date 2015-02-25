@@ -1,24 +1,29 @@
-<%@ Page Language="C#" Debug="true" responseEncoding=Big5 %>
+<%@ Page Language="C#" Debug="true"%>
     <script language="c#" runat="server">
         public void Page_Load()
         {
-            try
-            {
+         //   try
+         //   {
                 string path = @"D:\doc\";
                 string filename = HttpUtility.UrlDecode(Request.QueryString["FileName"]);
                 string tempname = HttpUtility.UrlDecode(Request.QueryString["TempName"]);
-                Response.ContentType = "application/x-msdownload;";
-                Response.AddHeader("Content-transfer-encoding", "binary");
-                Response.AddHeader("Content-Disposition", "attachment;filename=" + System.IO.Path.GetFileName(path+filename));
-                Response.BinaryWrite(GetFileBits(path+tempname));
-                Response.End();
-            }
+
+                if (filename != null && filename.Length > 0 && tempname!=null  && tempname.Length > 0)
+                {
+                    Response.ContentType = "application/x-msdownload;";
+                    Response.AddHeader("Content-transfer-encoding", "binary");
+                    Response.AddHeader("Content-Disposition", "attachment;filename=" + System.IO.Path.GetFileName(path + filename));
+                    Response.BinaryWrite(GetFileBits(path + tempname));
+                    Response.End();              
+                }       
+         /*   }
             catch (Exception ex)
             {
+                Response.Write(ex.Message);
             }
             finally
             {
-            }          
+            }     */     
         }
 
         private byte[] GetFileBits(string filename)

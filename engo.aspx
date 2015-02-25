@@ -233,20 +233,16 @@
                 for (var i = 0; i < q_bbtCount; i++) {
                     $('#lblNo__' + i).text(i + 1);
                     if (!$('#btnMinut__' + i).hasClass('isAssign')) {
-                    	$('#txtFileName__' + i).bind('contextmenu', function(e) {
+                    	$('#txtFilename__' + i).bind('contextmenu', function(e) {
                             /*滑鼠右鍵*/
                             e.preventDefault();
-                            var n = $(this).attr('id').replace('txtFileName__', '');
-                        	
-                        	oReq.open("POST", 'engo_upload.aspx', true);
-							oReq.setRequestHeader("Content-type", "text/plain");
-						    oReq.timeout = 60000;
-						    oReq.ontimeout = function () { alert("Timed out!!!"); }
-							oReq.setRequestHeader("FileName", escape($('#txtFileName__'+n).val()));
-							oReq.setRequestHeader("TempName", escape($('#txtTempName__'+n).val()));
-							
-						//	oReq.send(fr.result);
-                        
+                            var n = $(this).attr('id').replace('txtFilename__', '');
+                        	var t_filename = escape($('#txtFilename__'+n).val());
+                        	var t_tempname = escape($('#txtTempname__'+n).val());
+                        	if(t_filename.length>0 && t_tempname.length>0)
+                        		window.open('engo_download.aspx?FileName='+t_filename+'&TempName='+t_tempname, "_blank", 'directories=no,location=no,menubar=no,resizable=1,scrollbars=1,status=0,toolbar=1');
+                        	else
+                        		alert('無資料...'+n);
                         });
                     	
                     	$('#btnUpload__'+i).change(function(e){
