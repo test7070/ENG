@@ -395,33 +395,6 @@
 			}
 			
 			function btnOk() {
-				if (q_getPara('sys.project').toUpperCase()=='XY' && q_cur==1){
-					if($('#txtXyNoa1').val().length==0){
-						alert('請輸入客戶編號!!');
-						return;
-					}
-					
-					if($('#txtXyNoa1').val().length<5 && $('#txtXyNoa2').val().length==0 && $('#txtXyComp2').val().length==0 ){//總店流水號 沒有分店
-						t_where = "where=^^ charindex('" + $('#txtXyNoa1').val() + "',noa)=1 and len(noa)<=5 ^^";
-						q_gt('cust', t_where, 0, 0, 0, "XY_AutoCustno1", r_accy);
-						return;
-					}else if($('#txtXyNoa1').val().length<5 && $('#txtXyNoa2').val().length==0 && $('#txtXyComp2').val().length>0){//總店 分店流水號
-						t_where = "where=^^ charindex('" + $('#txtXyNoa1').val() + "',noa)=1 and len(noa)<=5^^";
-						q_gt('cust', t_where, 0, 0, 0, "XY_AutoCustno2", r_accy);
-						return;
-					}else if($('#txtXyNoa1').val().length>=5 && $('#txtXyNoa2').val().length==0 && $('#txtXyComp2').val().length>0){//分店流水號
-						t_where = "where=^^ charindex('" + $('#txtXyNoa1').val() + "',noa)=1 and len(noa)>5^^";
-						q_gt('cust', t_where, 0, 0, 0, "XY_AutoCustno3", r_accy);
-						return;
-					}else if($('#txtXyNoa1').val().length>=5 && $('#txtXyNoa2').val().length==0 && $('#txtXyComp2').val().length==0){//只有總店編號
-						$('#txtNoa').val($('#txtXyNoa1').val());
-						$('#txtComp').val($('#txtXyComp1').val());
-					}else if($('#txtXyNoa1').val().length>=5 && $('#txtXyNoa2').val().length>0){//總店與分店編號 都有打
-						$('#txtNoa').val($('#txtXyNoa1').val()+'-'+$('#txtXyNoa2').val());
-						$('#txtComp').val($('#txtXyComp1').val()+'-'+$('#txtXyComp2').val());
-					}
-				}
-				
 				Lock();
 				$('#txtNoa').val($.trim($('#txtNoa').val()));
 				if (q_cur==1 && !((/^(\w+|\w+\u002D\w+)$/g).test($('#txtNoa').val()))) {

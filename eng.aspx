@@ -152,15 +152,33 @@
                     opacity : 0
                 });
                 sum();
-				var t_noa = $('#txtNoa').val();   	
-				if(t_noa.length>0){
-					t_where="where=^^ noa='"+t_noa+"'^^";
-            		q_gt('eng', t_where, 0, 0, 0, JSON.stringify({action:'save',noa:t_noa}), r_accy);
-				}else{
-					alert('請輸入'+q_getMsg('lblNoa'));
+                if($('#txtNoa').val().length==0){
+	                alert('請輸入'+q_getMsg('lblNoa'));
 					return;
 					Unlock(1);
+                }
+				$('#txtNoa').val($.trim($('#txtNoa').val()));
+				if(q_cur==1 && !((/^(\w+|\w+\u002D\w+)$/g).test($('#txtNoa').val()))){
+					alert('編號只允許 英文(A-Z)、數字(0-9)及dash(-)。' + String.fromCharCode(13) + 'EX: A01、A01-001');
+					Unlock();
+					return;
 				}
+				
+				if(q_cur==1){
+					t_where="where=^^ noa='"+t_noa+"'^^";
+					q_gt('eng', t_where, 0, 0, 0, JSON.stringify({action:'save',noa:t_noa}), r_accy);
+				}else{
+					wrServer($('#txtNoa').val());
+				}
+								
+				// if(t_noa.length>0){
+					// t_where="where=^^ noa='"+t_noa+"'^^";
+            		// q_gt('eng', t_where, 0, 0, 0, JSON.stringify({action:'save',noa:t_noa}), r_accy);
+				// }else{
+					// alert('請輸入'+q_getMsg('lblNoa'));
+					// return;
+					// Unlock(1);
+				// }
             }
             function save(){
             	if (q_cur == 1) {
@@ -543,7 +561,7 @@
 			</table>
 		</div>
 		<input id="q_sys" type="hidden" />
-		<div id="dbbt">
+		<div id="dbbt" style="display: none">
 			<table id="tbbt">
 				<tbody>
 					<tr class="head" style="color:white; background:#003366;">
