@@ -240,7 +240,7 @@
                         	var t_filename = escape($('#txtFilename__'+n).val());
                         	var t_tempname = escape($('#txtTempname__'+n).val());
                         	if(t_filename.length>0 && t_tempname.length>0)
-                        		window.open('engo_download.aspx?FileName='+t_filename+'&TempName='+t_tempname, "_blank", 'directories=no,location=no,menubar=no,resizable=1,scrollbars=1,status=0,toolbar=1');
+                        		$('#xdownload').attr('src','engo_download.aspx?FileName='+t_filename+'&TempName='+t_tempname);
                         	else
                         		alert('無資料...'+n);
                         });
@@ -248,12 +248,14 @@
                     	$('#btnUpload__'+i).change(function(e){
 							event.stopPropagation(); 
 						    event.preventDefault();
+						    if(q_cur==1 || q_cur==2){}else{return;}
 						    var t_n = $(this).attr('id').replace('btnUpload__','');
 							file = $(this)[0].files[0];
 							if(file){
+								Lock(1);
 								var ext = '';
 								var extindex = file.name.lastIndexOf('.');
-								if(extindex>0){
+								if(extindex>=0){
 									ext = file.name.substring(extindex,file.name.length);
 								}
 								$('#txtFilename__'+t_n).val(file.name);
@@ -261,6 +263,7 @@
 								
 								fr = new FileReader();
 								fr.fileName = $('#txtTempname__'+t_n).val();
+								fr.n = t_n;
 							    fr.readAsDataURL(file);
 							    fr.onprogress = function(e){
 							    	 if ( e.lengthComputable ) { 
@@ -270,14 +273,12 @@
 							    }
 							    fr.onloadstart = function(e){
 							    	$('#FileList').append('<div styly="width:100%;"><progress id="progress" max="100" value="0" ></progress><progress id="progress" max="100" value="0" ></progress><a>'+fr.fileName+'</a></div>');
-							    	$('.btnUpload').attr('disabled','disabled');
 							    }
 							    fr.onloadend = function(e){
 							    	$('#FileList').children().last().find('progress').eq(0).attr('value',100);
 							    	
 									console.log(fr.fileName+':'+fr.result.length);
 							    	var oReq = new XMLHttpRequest();
-							    	
 							    	oReq.upload.addEventListener("progress",function(e) {
 								    	if (e.lengthComputable) {
 									    	percentComplete = Math.round((e.loaded / e.total) * 100,0);
@@ -285,13 +286,16 @@
 									    }
 									}, false);
 							    	oReq.upload.addEventListener("load",function(e) {
-									    $('.btnUpload').val('');
+									    Unlock(1);
 									}, false);
-		
+									oReq.upload.addEventListener("error",function(e) {
+									    alert("資料上傳發生錯誤!");
+									}, false);
+									
+									oReq.timeout = 60000;
+								    oReq.ontimeout = function () { alert("Timed out!!!"); }
 									oReq.open("POST", 'engo_upload.aspx', true);
 									oReq.setRequestHeader("Content-type", "text/plain");
-								    oReq.timeout = 60000;
-								    oReq.ontimeout = function () { alert("Timed out!!!"); }
 									oReq.setRequestHeader("FileName", escape(fr.fileName));
 									oReq.send(fr.result);
 							    };
@@ -513,7 +517,7 @@
                 font-size: medium;
             }
             .dbbs {
-                width: 1700px;
+                width: 1500px;
             }
             .dbbs .tbbs {
                 margin: 0;
@@ -541,7 +545,7 @@
                 font-size: medium;
             }
             #dbbt {
-                width: 600px;
+                width: 800px;
             }
             #tbbt {
                 margin: 0;
@@ -685,11 +689,7 @@
 						<td><span> </span><a id='lblWorker2' class="lbl"> </a></td>
 						<td><input id="txtWorker2"  type="text" class="txt c1" /></td>
 					</tr>
-					<tr>
-						<td><input id="txtFiles" type="text" class="txt c1"/></td>
-						<td><input type="file" id="btnFile" value="上傳"/></td>
-					</tr>
-					<tr>
+					<tr style="display: none;">
 						<td colspan="7"><div style="width:100%;" id="FileList"> </div></td>
 					</tr>
 				</table>
@@ -751,7 +751,7 @@
 					<input id="btnPlut" type="button" style="font-size: medium; font-weight: bold;" value="＋"/>
 					</td>
 					<td style="width:20px;"></td>
-					<td style="width:150px; text-align: center;">檔名</td>
+					<td style="width:300px; text-align: center;">檔名</td>
 					<td style="width:200px; text-align: center;">備註</td>
 				</tr>
 				<tr>
@@ -761,13 +761,14 @@
 					</td>
 					<td><a id="lblNo..*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
 					<td>
-						<input class="txt" id="txtFilename..*" type="text" style="width:95%;"/>
-						<input class="txt" id="txtTempname..*" type="text" style="width:95%;"/>
-						<input type="file" id="btnUpload..*" value="上傳" class="btnUpload"/>
+						<input class="txt" id="txtFilename..*" type="text" style="width:40%;float:left;"/>
+						<input type="file" id="btnUpload..*" value="上傳" class="btnUpload" style="width:50%;float:left;"/>
+						<input class="txt" id="txtTempname..*" type="text" style="display:none;"/>
 					</td>
 					<td><input class="txt" id="txtMemo..*" type="text" style="width:95%;" /></td>
 				</tr>
 			</table>
 		</div>
+		<iframe id="xdownload" style="display:none;"></iframe>
 	</body>
 </html>
