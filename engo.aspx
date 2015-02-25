@@ -259,7 +259,7 @@
 									ext = file.name.substring(extindex,file.name.length);
 								}
 								$('#txtFilename__'+t_n).val(file.name);
-								$('#txtTempname__'+t_n).val(guid()+ext);
+								$('#txtTempname__'+t_n).val(guid()+Date.now()+ext);
 								
 								fr = new FileReader();
 								fr.fileName = $('#txtTempname__'+t_n).val();
@@ -292,7 +292,7 @@
 									    alert("資料上傳發生錯誤!");
 									}, false);
 									
-									oReq.timeout = 60000;
+									oReq.timeout = 0;
 								    oReq.ontimeout = function () { alert("Timed out!!!"); }
 									oReq.open("POST", 'engo_upload.aspx', true);
 									oReq.setRequestHeader("Content-type", "text/plain");
