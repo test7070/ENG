@@ -18,12 +18,12 @@
             q_tables = 't';
             var q_name = "eng";
             var q_readonly = ['txtWorker','txtWorker2'];
-            var q_readonlys = [];
+            var q_readonlys = ['txtItemmoney'];
             var q_readonlyt = [];
             var bbmNum = [];
-            var bbsNum = [];
+            var bbsNum = [['txtItemprice',10,0,1],['txtItemcount',10,0,1],['txtItemmoney',10,0,1]];
             var bbtNum = [];
-            var bbmMask = [['txtDatea','999/99/99'],['txtStrdate','999/99/99'],['txtEnddate','999/99/99']];
+            var bbmMask = [];
             var bbsMask = [];
             var bbtMask = [];
             q_sqlCount = 6;
@@ -56,6 +56,7 @@
             }
 
             function mainPost() {
+            	bbmMask = [['txtDatea', r_picd], ['txtStrdate', r_picd], ['txtEnddate', r_picd]];
                 q_mask(bbmMask);
                	$('#txtNoa').change(function(e){
                 	$(this).val($.trim($(this).val()).toUpperCase());  
@@ -65,6 +66,7 @@
                 		q_gt('eng', t_where, 0, 0, 0, JSON.stringify({action:'change',noa:t_noa}));
 					}
                 });
+                
             }
 
             function q_funcPost(t_func, result) {
@@ -80,7 +82,7 @@
                 }
             }
             function q_gtPost(t_name) {
-                switch (t_name) {
+                switch (t_name) {	
                     case q_name:
                         if (q_cur == 4)
                             q_Seek_gtPost();
@@ -158,6 +160,7 @@
 					Unlock(1);
                 }
 				$('#txtNoa').val($.trim($('#txtNoa').val()));
+				var t_noa = $('#txtNoa').val();
 				if(q_cur==1 && !((/^(\w+|\w+\u002D\w+)$/g).test($('#txtNoa').val()))){
 					alert('編號只允許 英文(A-Z)、數字(0-9)及dash(-)。' + String.fromCharCode(13) + 'EX: A01、A01-001');
 					Unlock();
@@ -168,24 +171,16 @@
 					t_where="where=^^ noa='"+t_noa+"'^^";
 					q_gt('eng', t_where, 0, 0, 0, JSON.stringify({action:'save',noa:t_noa}), r_accy);
 				}else{
-					wrServer($('#txtNoa').val());
+					save();
 				}
-								
-				// if(t_noa.length>0){
-					// t_where="where=^^ noa='"+t_noa+"'^^";
-            		// q_gt('eng', t_where, 0, 0, 0, JSON.stringify({action:'save',noa:t_noa}), r_accy);
-				// }else{
-					// alert('請輸入'+q_getMsg('lblNoa'));
-					// return;
-					// Unlock(1);
-				// }
             }
             function save(){
             	if (q_cur == 1) {
                     $('#txtWorker').val(r_name);
-                } else
-                    $('#txtWorker2').val(r_name);
-                var t_noa = $('#txtNoa').val();  
+                } else {
+					$('#txtWorker2').val(r_name);
+                }
+                var t_noa = $('#txtNoa').val()  
                 wrServer(t_noa);
             }
 
@@ -196,7 +191,7 @@
             }
 
             function bbsSave(as) {
-                if (!as['productno']) {
+                if (!as['itemname']) {
                     as[bbsKey[1]] = '';
                     return;
                 }
@@ -247,6 +242,29 @@
                             var n = $(this).attr('id').replace('txtProductno_', '');
                             $('#btnProduct_'+n).click();
                         });
+                        $('#txtItemprice_'+i).change(function(e){
+                        	//	以下寫法為 區域變數 僅供內部類別內使用
+                        	var n = $(this).attr('id').replace('txtItemprice_','');
+                        	
+                        	//	以下寫法為 全域變數 可以讓別的程式再次利用
+                        	//t_IdSeq = -1;
+							//q_bodyId($(this).attr('id'));
+							//b_seq = t_IdSeq;
+							
+		                	q_tr('txtItemmoney_'+n,q_mul(q_float('txtItemprice_'+n),q_float('txtItemcount_'+n)));
+		                	// +	=>	q_add(,)
+		                	// -	=>	q_sub(,)
+		                	// *	=>	q_mul(,)
+		                	// /	=>	q_div(,)
+		                });
+		                $('#txtItemcount_'+i).change(function(e){
+                        	var n = $(this).attr('id').replace('txtItemcount_','');
+		                	q_tr('txtItemmoney_'+n,q_mul(q_float('txtItemprice_'+n),q_float('txtItemcount_'+n)));
+		                });
+		                // $('#txtItemmoney_'+i).change(function(e){
+		                	// var n = $(this).attr('id').replace('txtItemmoney_','');
+		                	// q_tr('txtItemmoney_'+n,q);
+		                // });
                     }
                 }
                 _bbsAssign();
@@ -492,17 +510,17 @@
 					</tr>
 				</table>
 			</div>
-			<div class='dbbm'>
+			<div class='dbbm' style="width: 800px">
 				<table class="tbbm"  id="tbbm">
 					<tr style="height:1px;">
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td class="tdZ"></td>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+						<td class="tdZ"> </td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblDatea" class="lbl"> </a></td>
@@ -530,9 +548,10 @@
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblMemo" class="lbl"> </a></td>
-						<td colspan="3" rowspan="2"><textarea id="txtMemo" class="txt c1" rows="3"></textarea></td>
+						<td colspan="6" rowspan="3"><textarea id="txtMemo" class="txt c1" rows="6"> </textarea></td>
 					</tr>
-					<tr></tr>
+					<tr> </tr>
+					<tr> </tr>
 					<tr>
 						<td><span> </span><a id="lblWorker" class="lbl"> </a></td>
 						<td><input id="txtWorker" type="text" class="txt c1"/></td>
@@ -545,18 +564,23 @@
 		<div class='dbbs'>
 			<table id="tbbs" class='tbbs'>
 				<tr style='color:white; background:#003366;' >
-					<td style="width:20px;">
-						<input id="btnPlus" type="button" style="font-size: medium; font-weight: bold;" value="＋"/>
-					</td>
+					<td style="width:20px;"><input id="btnPlus" type="button" style="font-size: medium; font-weight: bold;" value="＋"/></td>
 					<td style="width:20px;"> </td>
-					<td style="width:200px; text-align: center;">工程項目</td>
+					<td align="center" style="width:300px;"><a id='lblItemname'> </a></td>
+					<td align="center" style="width:10px;"><a id='lblItemprice'> </a></td>
+					<td align="center" style="width:10px;"><a id='lblItemcount'> </a></td>
+					<td align="center" style="width:10px;"><a id='lblItemmoney'> </a></td>
 				</tr>
 				<tr  style='background:#cad3ff;'>
 					<td align="center">
-						<input id="btnMinus.*" type="button" style="font-size: medium; font-weight: bold;" value="－"/>
-						<input id="txtNoq.*" type="text" style="display: none;"/>
+						<input id="btnMinus.*" type="button" class="btn" value='－' style=" font-size: medium;font-weight: bold;" />
+						<input id="txtNoq.*" type="text" style="display: none" />
 					</td>
 					<td><a id="lblNo.*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
+					<td><input id="txtItemname.*" type="text" style="width:95%; float:left;"/> </td>
+					<td><input id="txtItemprice.*" type="text" class="txt num c1" style="width:95%"/> </td>
+					<td><input id="txtItemcount.*" type="text" class="txt num c1" style="width:95%"/> </td>
+					<td><input id="txtItemmoney.*" type="text" class="txt num c1" style="width:95%"/></td>
 				</tr>
 			</table>
 		</div>
@@ -574,6 +598,7 @@
 						<td>
 							<input id="btnMinut..*"  type="button" style="font-size: medium; font-weight: bold;" value="－"/>
 							<input id="txtNoq..*" type="text" style="display: none;"/>
+						</td>
 						<td><a id="lblNo..*" style="font-weight: bold;text-align: center;display: block;"> </a></td>						
 					</tr>
 				</tbody>
