@@ -62,7 +62,7 @@
                 q_getFormat();
                 bbmMask = [['txtBirthday', r_picd], ['txtIndate', r_picd], ['txtOutdate', r_picd], ['txtMobile1', '9999999999'], ['txtMobile2', '9999999999'], ['txtHealth_bdate', r_picd], ['txtHealth_edate', r_picd], ['txtLabor1_bdate', r_picd], ['txtLabor1_edate', r_picd], ['txtLabor2_bdate', r_picd], ['txtLabor2_edate', r_picd]];
                 q_mask(bbmMask);
-                q_cmbParse("cmbSex", q_getPara('sss.sex'));
+                q_cmbParse("cmbSex", q_getPara('sss.sex'));		//qsys
                 q_cmbParse("cmbBlood", ('').concat(new Array('A', 'B', 'AB', 'O')));
                 
                 $('#txtNoa').change(function(e){
@@ -70,7 +70,7 @@
 					if($(this).val().length>0){
 						if((/^(\w+|\w+\u002D\w+)$/g).test($(this).val())){
 							t_where="where=^^ noa='"+$(this).val()+"'^^";
-                    		q_gt('sss', t_where, 0, 0, 0, "checkSssno_change", r_accy);
+                    		q_gt('ssa', t_where, 0, 0, 0, "checkSsano_change", r_accy);
 						}else{
 							Lock();
 							alert('編號只允許 英文(A-Z)、數字(0-9)及dash(-)。'+String.fromCharCode(13)+'EX: A01、A01-001');
@@ -144,13 +144,13 @@
             function q_gtPost(t_name) {
                 switch (t_name) {
                 	case 'checkSssno_change':
-                		var as = _q_appendData("sss", "", true);
+                		var as = _q_appendData("ssa", "", true);
                         if (as[0] != undefined){
                         	alert('已存在 '+as[0].noa+' '+as[0].namea);
                         }
                 		break;
                 	case 'checkSssno_btnOk':
-                		var as = _q_appendData("sss", "", true);
+                		var as = _q_appendData("ssa", "", true);
                         if (as[0] != undefined){
                         	alert('已存在 '+as[0].noa+' '+as[0].namea);
                             Unlock();
@@ -202,7 +202,7 @@
             function _btnSeek() {
                 if (q_cur > 0 && q_cur < 4)// 1-3
                     return;
-                q_box('sss_s.aspx', q_name + '_s', "550px", "400px", q_getMsg("popSeek"));
+                q_box('ssa_s.aspx', q_name + '_s', "550px", "400px", q_getMsg("popSeek"));
             }
             function btnIns() {
                 _btnIns();
@@ -221,7 +221,7 @@
             }
 
             function btnPrint() {
-            	q_box('z_sssp.aspx', '', "95%", "95%", q_getMsg("popPrint"));
+            	// q_box('z_sssp.aspx', '', "95%", "95%", q_getMsg("popPrint"));
             }
 			function q_stPost() {
                 if (!(q_cur == 1 || q_cur == 2))
@@ -260,7 +260,7 @@
                     $('#txtId').val($('#txtId').val().toUpperCase());
 				if(q_cur==1){
                 	t_where="where=^^ noa='"+$('#txtNoa').val()+"'^^";
-                    q_gt('sss', t_where, 0, 0, 0, "checkSssno_btnOk", r_accy);
+                    q_gt('ssa', t_where, 0, 0, 0, "checkSssno_btnOk", r_accy);
                 }else{
                 	wrServer($('#txtNoa').val());
                 }
