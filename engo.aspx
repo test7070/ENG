@@ -36,6 +36,7 @@
             brwList = [];
             brwNowPage = 0;
             brwKey = 'Datea';
+            brwCount2 = 11;
             aPop = new Array();
 
             $(document).ready(function() {
@@ -50,17 +51,17 @@
             	var tt_total=0,tt_utotal=0;
                 for (var i = 0; i < q_bbsCount; i++) {
                 	var t_total=0,t_utotal=0;
-                    t_total = round(q_float('txtMount_' + i), q_float('txtPrice_' + i), 0);
-                    $('#txtMoney_' + i).val(t_total);
-                    t_utotal = round(q_float('txtUmount_' + i), q_float('txtUprice_' + i), 0);
-                    $('#txtUmoney_' + i).val(t_utotal);
+                	t_total = round(q_mul(q_float('txtMount_'+i),q_float('txtPrice_'+i)),0);
+                    q_tr('txtMoney_'+i,t_total);
+                    t_utotal = round(q_mul(q_float('txtUmount_'+i),q_float('txtUprice_'+i)),0);
+                    q_tr('txtUmoney_'+i,t_utotal);
                     
                     tt_total+=t_total;
                     tt_utotal+=t_utotal;
                 }
-                $('#txtMoney').val(t_total);
-                $('#txtUmoney').val(tt_utotal);
-                $('#txtProfit').val(t_total-tt_utotal);
+                q_tr('txtMoney',tt_total);
+                q_tr('txtUmoney',tt_utotal);
+                q_tr('txtProfit',q_sub(tt_total,tt_utotal),0);
             };
 
             function main() {
@@ -81,6 +82,9 @@
                 	$('#div_chgprice').show();
 				});
 				$('#btnClose_div_chgprice').click(function() {
+					$('#chgprice_txtMoney').val("");
+					$('#chgprice_txtProduct').val("");
+					$('#chgprice_txtPrice').val("");
                 	$('#div_chgprice').hide();
 				});
 				$('#btnDo_chgprice').click(function() {
@@ -89,33 +93,33 @@
                 	
                 	//直接在bbs調整
                 	if(!emp($('#chgprice_txtMoney').val())){
-                		if(dec($('#txtMoney').val())>0){
-                			var t_pro=q_div(dec($('#chgprice_txtMoney').val()),dec($('#txtMoney').val()));
+						if(q_float('txtMoney')>0){
+                			var t_pro=q_div(q_float('chgprice_txtMoney'),q_float('txtMoney'));
                 			for (var i = 0; i < q_bbsCount; i++) {
                 				if(!emp($('#txtPrice_'+i).val())){
-                					q_tr('txtPrice_'+i,q_mul(q_float('txtPrice_'+i),t_pro));
-                					q_tr('txtMoney_'+i,q_mul(q_float('txtPrice_'+i),q_float('txtMount_'+i)));
+                					q_tr('txtPrice_'+i,round(q_mul(q_float('txtPrice_'+i),t_pro),2));
+                					q_tr('txtMoney_'+i,round(q_mul(q_float('txtPrice_'+i),q_float('txtMount_'+i)),0));
                 				}
                 			}
                 		}
                 	}else{
                 		for (var i = 0; i < q_bbsCount; i++) {
-                			if(!emp($('#txtPrice_'+i).val()) && $('#txtProducct_'+i).val().indexOf($('#chgprice_txtProduct').val())>-1){
-                				q_tr('txtPrice_'+i,q_mul(q_float('txtPrice_'+i),q_div(q_add(1,q_float('chgprice_txtPrice')),100)));
-                				q_tr('txtMoney_'+i,q_mul(q_float('txtPrice_'+i),q_float('txtMount_'+i)));
+                			if(!emp($('#txtPrice_'+i).val()) && !emp($('#txtProduct_'+i).val()) && $('#txtProduct_'+i).val().indexOf($('#chgprice_txtProduct').val())>-1){
+                				q_tr('txtPrice_'+i,round(q_mul(q_float('txtPrice_'+i),q_add(1,q_div(q_float('chgprice_txtPrice'),100))),2));
+                				q_tr('txtMoney_'+i,round(q_mul(q_float('txtPrice_'+i),q_float('txtMount_'+i)),0));
                 			}
                 		}
                 	}
+                	sum();
+                	
+                	$('#chgprice_txtMoney').val("");
+					$('#chgprice_txtProduct').val("");
+					$('#chgprice_txtPrice').val("");
 				});
 				
-				/*$('#btnEngqno').click(function() {
-					if((q_cur==1 || q_cur==2) && !emp($('#txtEngqno').val())){
-						var t_date=q_date();
-						q_gt('engq', "where=^^noa='"+$('#txtEngqno').val()+"' and odate>='"+t_date+"' ^^", 0, 0, 0, "engq", r_accy);
-					}
-				});*/
-				
 				$('#btnEng').click(function() {
+					// var t_paras = $('#txtOrgcustno').val()+ ';'+$('#txtChgcustno').val();
+					// q_func('qtxt.query.toeng', 'toengos.txt,custno_change,' + t_paras);
 				});
 				
             }
@@ -213,6 +217,12 @@
                         
                         $('#txtPrice_' + j).change(function() {
                             sum();
+                        });
+                        $('#txtUmount_'+ j).change(function() {
+                          	sum();
+                        });
+                        $('#txtUprice_'+ j).change(function() {
+                          	sum();
                         });
                         
                         $('#btnRecord_'+j).click(function() {
@@ -356,9 +366,9 @@
             function readonly(t_para, empty) {
                 _readonly(t_para, empty);
                 if(t_para){
-                	$('#btnChgprice').removeAttr('disabled');
+                	$('#btnChgprice').attr('disabled','disabled');
                 }else{
-                	$('#btnChgprice').attr('disabled', 'disabled');
+                	$('#btnChgprice').removeAttr('disabled');
                 }
                 $('#div_chgprice').hide();
             }
@@ -585,17 +595,26 @@
 			<table id="table_chgprice" style="width:100%;" border="1" cellpadding='2' cellspacing='0'>
 				<tr>
 					<td style="background-color: #f8d463;" align="left">
-						總價調：<input id='chgprice_txtMoney' type='text' class='txt' style="float:none;width: 150px;"/>
+						<span style="color: #F00078">總價調：</span>
+						<input id='chgprice_txtMoney' type='text' class='txt' style="float:none;width: 180px;"/>
 					</td>
 				</tr>
 				<tr>
-					<td style="background-color: #f8d463;" align="left">
-						相關字：<input id='chgprice_txtProduct' type='text' class='txt' style="float:none;width: 150px;"/>
-					</td>
-				</tr>
-				<tr>
-					<td style="background-color: #f8d463;" align="left">
-						調整%：<input id='chgprice_txtPrice' type='text' class='txt' style="float:none;width: 150px;"/>
+					<td style="background-color: #f8d463;">
+						<table style="width:100%;" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td align="left">
+									<span style="color: #009100">相關字：</span>
+									<input id='chgprice_txtProduct' type='text' class='txt' style="float:none;width: 180px;"/>
+								</td>
+							</tr>
+							<tr>
+								<td align="left">
+									<span style="color: #009100">調整% ：</span>
+									<input id='chgprice_txtPrice' type='text' class='txt' style="float:none;width: 180px;"/>
+								</td>
+							</tr>
+						</table>
 					</td>
 				</tr>
 				<tr>
@@ -682,7 +701,7 @@
 					</tr>
 					<tr>
 						<td><span> </span><a id='lblMemo' class="lbl"> </a></td>
-						<td colspan="6"><textarea id="txtMemo" rows="5" cols="10" class="txt c1"> </textarea></td>
+						<td colspan="6"><textarea id="txtMemo" rows="6" cols="10" class="txt c1"> </textarea></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id='lblWorker' class="lbl"> </a></td>
