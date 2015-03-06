@@ -270,7 +270,8 @@
 									ext = file.name.substring(extindex,file.name.length);
 								}
 								$('#txtFilename__'+t_n).val(file.name);
-								$('#txtTempname__'+t_n).val(guid()+Date.now()+ext);
+								//$('#txtTempname__'+t_n).val(guid()+Date.now()+ext);
+								$('#txtTempname__'+t_n).val(Date.now()+file.name);
 								
 								fr = new FileReader();
 								fr.fileName = $('#txtTempname__'+t_n).val();
