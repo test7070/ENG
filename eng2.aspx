@@ -17,10 +17,10 @@
 
             q_tables = 't';
             var q_name = "eng2";
-            var q_readonly = ['txtNoa','txtWorker','txtWorker2','txtTotal','txtEng','txtCustno','txtComp'];
-            var q_readonlys = [];
+            var q_readonly = ['txtNoa','txtWorker','txtWorker2','txtMoney','txtEng','txtCustno','txtComp'];
+            var q_readonlys = ['txtEngono','txtNo2'];
             var q_readonlyt = [];
-            var bbmNum = [['txtTotal', 15, 0, 1]];
+            var bbmNum = [['txtMoney', 15, 0, 1]];
             var bbsNum = [['txtPrice', 10, 0, 1], ['txtMount', 10, 0, 1], ['txtMoney', 15, 0, 1]];
             var bbtNum = [];
             var bbmMask = [];
@@ -34,7 +34,7 @@
             q_desc = 1;
             brwCount2 = 10;
 
-            aPop = new Array(['txtEngno', '', 'engo', 'engno,eng,custno,comp', 'txtEngno,txtEng,txtCustno,txtComp', '']);
+            aPop = new Array(['txtEngno', '', 'engo', 'engno,eng,custno,comp', 'txtEngno,txtEng,txtCustno,txtComp', 'engo_b.aspx']);
 			
 			var z_mech = new Array();
             $(document).ready(function() {
@@ -83,10 +83,17 @@
             function q_gtPost(t_name) {
                 switch (t_name) {
                 	case 'engo':
-                		var as = _q_appendData("engos", "", true);                		
+                		var as = _q_appendData("engos", "", true);     
+                		for (var i=0;i<as.length;i++){
+                			if(as[i].out=='true'){
+                				as.splice(i, 1);
+								i--;
+                			}
+                		}
+                		
                 		q_gridAddRow(bbsHtm, 'tbbs'
-							,'txtProductno,txtProduct,txtUnit,txtMount,txtPrice,txtMoney', as.length, as,
-							'productno,product,unit,mount,price,money','');                		
+						,'txtProductno,txtProduct,txtUnit,txtMount,txtPrice,txtMoney,txtEngono,txtNo2', as.length, as,
+						'productno,product,unit,mount,price,money,noa,no2','');             		
                 		break;
                     case q_name:
                         if (q_cur == 4)
@@ -114,7 +121,7 @@
             function _btnSeek() {
                 if (q_cur > 0 && q_cur < 4)
                     return;
-                q_box('eng2_s.aspx', q_name + '_s', "550px", "440px", q_getMsg("popSeek"));
+                q_box('eng2_s.aspx', q_name + '_s', "500px", "330px", q_getMsg("popSeek"));
             }
 
             function btnIns() {
@@ -130,7 +137,7 @@
             }
 
             function btnPrint() {
-                q_box("z_eng2p.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'eng2', "95%", "95%", m_print);
+                q_box("z_eng2p.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";noa='"+$('#txtNoa').val()+"';" + r_accy + "_" + r_cno, 'eng2', "95%", "95%", m_print);
             }
 
             function btnOk() {
@@ -223,7 +230,7 @@
 					q_tr('txtMoney_'+i,q_mul(q_float('txtPrice_'+i),q_float('txtMount_'+i)));
 					t_total += q_float('txtMoney_'+i);
 				}
-				$('#txtTotal').val(q_tr(t_total,0));
+				$('#txtMoney').val(q_tr(t_total,0));
             }
 
             function q_appendData(t_Table) {
@@ -498,8 +505,8 @@
 						<td colspan="4"><textarea id="txtMemo" rows="3" cols="10" class="txt c1"> </textarea></td>
 					</tr>
 					<tr>
-						<td><span> </span><a id="lblTotal" class="lbl"> </a></td>
-						<td ><input id="txtTotal"  type="text" class="txt c1 num"/></td>
+						<td><span> </span><a id="lblMoney" class="lbl"> </a></td>
+						<td ><input id="txtMoney"  type="text" class="txt c1 num"/></td>
 						<td><span> </span><a id="lblValuation" class="lbl"> </a></td>
 						<td><input id="txtValuation"  type="text"  class="txt c1"/></td>
 						<td><span> </span><a id="lblApv" class="lbl"> </a></td>
@@ -558,8 +565,12 @@
 					<td><input class="txt" id="txtSection.*" type="text" style="width:95%; float:left;"/></td>
 					<td><input class="txt" id="txtBmileage.*" type="text" style="width:95%; float:left;"/></td>
 					<td><input class="txt" id="txtEmileage.*" type="text" style="width:95%; float:left;"/></td>
-					<td><input class="txt" id="txtLengthb.*" type="text" style="width:95%; float:left;"/></td>
-					<td><input class="txt" id="txtMemo.*" type="text" style="width:95%; float:left;"/></td>
+					<td><input class="txt num" id="txtLengthb.*" type="text" style="width:95%; float:r;"/></td>
+					<td>
+						<input class="txt" id="txtMemo.*" type="text" style="width:95%; float:left;"/>
+						<input class="txt" id="txtEngono.*" type="text" style="width:75%; float:left;"/>
+						<input class="txt" id="txtNo2.*" type="text" style="width:20%; float:left;"/>
+					</td>
 				</tr>
 			</table>
 		</div>

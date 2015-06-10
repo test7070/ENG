@@ -23,7 +23,7 @@
             q_tables = 't';
             var q_name = "engo";
             var q_readonly = ['txtNoa', 'txtWorker', 'txtWorker2','txtUincome','txtIncome'];
-            var q_readonlys = ['txtTggno','txtTgg','txtOmoney','txtCost'];
+            var q_readonlys = ['txtTgg','txtOmoney','txtCost'];
             var q_readonlyt = [];
             var bbmNum = [['txtMoney', 15, 0, 1],['txtUmoney', 15, 0, 1],['txtProfit', 15, 0, 1],
             						['txtUincome', 15, 0, 1],['txtIncome', 15, 0, 1]];
@@ -40,7 +40,7 @@
             brwNowPage = 0;
             brwKey = 'Datea';
             brwCount2 = 11;
-            aPop = new Array();
+            aPop = new Array(['txtTggno_', '', 'tgg', 'noa,comp', 'txtTggno_,txtTgg_', 'tgg_b.aspx']);
 
             $(document).ready(function() {
                 bbmKey = ['noa'];
@@ -80,7 +80,7 @@
                 bbmMask = [['txtDatea', r_picd]];
                 bbsMask = [['txtBdate', r_picd], ['txtEdate', r_picd]];
                 q_mask(bbmMask);
-                q_cmbParse("cmbChase",'工程追加,實作實算,追加合約','s');
+                q_cmbParse("cmbChase",',工程追加,實作實算,追加合約','s');
                 
                 $('#btnChgprice').click(function() {
                 	$('#div_chgprice').show();
@@ -575,7 +575,7 @@
                 font-size: medium;
             }
             #dbbt {
-                width: 800px;
+                width: 900px;
             }
             #tbbt {
                 margin: 0;
@@ -729,7 +729,7 @@
 						<td><span> </span><a id='lblDirector' class="lbl"> </a></td>
 						<td><input id="txtDirector"  type="text" class="txt c1" /></td>
 						<td><span> </span><a id='lblManager' class="lbl"> </a></td>
-						<td><input id="txtManager2"  type="text" class="txt c1" /></td>
+						<td><input id="txtManager"  type="text" class="txt c1" /></td>
 						<td><span> </span><a id='lblAccountants' class="lbl"> </a></td>
 						<td><input id="txtAccountants"  type="text" class="txt c1" /></td>
 					</tr>
@@ -817,12 +817,11 @@
 		<div id="dbbt">
 			<table id="tbbt">
 				<tr class="head" style="color:white; background:#003366;">
-					<td style="width:20px;">
-					<input id="btnPlut" type="button" style="font-size: medium; font-weight: bold;" value="＋"/>
-					</td>
+					<td style="width:20px;"><input id="btnPlut" type="button" style="font-size: medium; font-weight: bold;" value="＋"/></td>
 					<td style="width:20px;"> </td>
-					<td style="width:300px; text-align: center;">檔名</td>
-					<td style="width:200px; text-align: center;">備註</td>
+					<td style="width:300px; text-align: center;"><a id='lblCondition_t'> </a></td>
+					<td style="width:300px; text-align: center;"><a id='lblFilename_t'> </a></td>
+					<td style="width:200px; text-align: center;"><a id='lblMemo_t'> </a></td>
 				</tr>
 				<tr>
 					<td>
@@ -830,6 +829,7 @@
 						<input class="txt" id="txtNoq..*" type="text" style="display: none;"/>
 					</td>
 					<td><a id="lblNo..*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
+					<td><input class="txt" id="txtCondition..*" type="text" style="width:95%;" /></td>
 					<td>
 						<input class="txt" id="txtFilename..*" type="text" style="width:40%;float:left;"/>
 						<input type="file" id="btnUpload..*" value="上傳" class="btnUpload" style="width:50%;float:left;"/>
