@@ -59,12 +59,16 @@
 						name : 'priceprecision',
 						value : q_getPara('vcc.pricePrecision')
 					},{
-                        type : '5', //[5]//1
+						type : '0',//[5]
+						name : 'worker',
+						value : r_name
+					},{
+                        type : '5', //[6]//1
                         name : 'xcno',
                         value : acompItem.split(',')
                     }, {
-                        type : '1', //[6][7]//2
-                        name : 'xnoa'
+                        type : '6', //[7]//2
+                        name : 'xengno'
                     }, {
                         type : '1', //[8][9]//3
                         name : 'xdate'
@@ -107,9 +111,8 @@
                 t_day = t_day > 9 ? t_day + '' : '0' + t_day;
                 $('#txtXdate2').val(t_year + '/' + t_month + '/' + t_day);
                 
-                if(q_getHref()[0]=='noa'){
-                	$('#txtXnoa1').val(q_getHref()[1]);
-                	$('#txtXnoa2').val(q_getHref()[1]);
+                if(q_getHref()[0]=='engno'){
+                	$('#txtXengno').val(q_getHref()[1]);
                 }
                 
             }

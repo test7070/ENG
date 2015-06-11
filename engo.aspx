@@ -350,7 +350,7 @@
             }
 
             function btnPrint() {
-                q_box("z_engop.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + $('#txtNoa').val()+ ";" + r_accy + "_" + r_cno, 'engop', "95%", "95%", m_print);
+                q_box("z_engop.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";engno='" + $('#txtEngno').val()+ "';" + r_accy + "_" + r_cno, 'engop', "95%", "95%", m_print);
             }
 
             function wrServer(key_value) {

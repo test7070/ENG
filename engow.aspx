@@ -21,7 +21,9 @@
             var decbbs = [];
             var decbbm = [];
             var q_readonly = [];
-            var q_readonlys = [];
+            var q_readonlys = [['txtPrice', 10, 2, 1], ['txtMount', 10, 2, 1], ['txtMoney', 15, 0, 1]
+            							, ['txtUprice', 10, 2, 1], ['txtUmount', 10, 2, 1], ['txtUmoney', 15, 0, 1]
+            							, ['txtCost', 15, 0, 1], ['txtDays', 10, 0, 1]];
             var bbmNum = [];
             var bbsNum = [];
             var bbmMask = [];
@@ -147,7 +149,9 @@
 					<td align="center"><a id='lblMount'> </a></td>
 					<td align="center"><a id='lblPrice'> </a></td>
 					<td align="center"><a id='lblMoney'> </a></td>
-					<td align="center"><a id='lblEmoney'> </a></td>
+					<td align="center"><a id='lblUmount'> </a></td>
+					<td align="center"><a id='lblUprice'> </a></td>
+					<td align="center"><a id='lblUmoney'> </a></td>
 					<td align="center"><a id='lblCost'> </a></td>
 					<td align="center"><a id='lblDays'> </a></td>
 					<td align="center"><a id='lblMemo'> </a></td>
@@ -160,7 +164,9 @@
 					<td style="width:8%;"><input class="txt" id="txtMount.*" type="text" style="width:94%; text-align:right"  /></td>
 					<td style="width:8%;"><input class="txt" id="txtPrice.*" type="text" style="width:94%; text-align:right"  /></td>
 					<td style="width:8%;"><input class="txt" id="txtMoney.*" type="text" style="width:94%; text-align:right"  /></td>
-					<td style="width:8%;"><input class="txt" id="txtEmoney.*" type="text" style="width:94%; text-align:right"  /></td>
+					<td style="width:8%;"><input class="txt" id="txtUmount.*" type="text" style="width:94%; text-align:right"  /></td>
+					<td style="width:8%;"><input class="txt" id="txtUprice.*" type="text" style="width:94%; text-align:right"  /></td>
+					<td style="width:8%;"><input class="txt" id="txtUmoney.*" type="text" style="width:94%; text-align:right"  /></td>
 					<td style="width:8%;"><input class="txt" id="txtCost.*" type="text" style="width:94%; text-align:right"  /></td>
 					<td style="width:5%;"><input class="txt" id="txtDays.*" type="text" style="width:98%;"   /></td>
 					<td>

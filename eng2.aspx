@@ -21,7 +21,7 @@
             var q_readonlys = ['txtEngono','txtNo2'];
             var q_readonlyt = [];
             var bbmNum = [['txtMoney', 15, 0, 1]];
-            var bbsNum = [['txtPrice', 10, 0, 1], ['txtMount', 10, 0, 1], ['txtMoney', 15, 0, 1]];
+            var bbsNum = [['txtPrice', 10, 2, 1], ['txtMount', 10, 2, 1], ['txtMoney', 15, 0, 1]];
             var bbtNum = [];
             var bbmMask = [];
             var bbsMask = [];
