@@ -254,7 +254,7 @@
             }
 
             function btnPrint() {
-                q_box('z_ordcp.aspx', '', "95%", "95%", q_getMsg("popPrint"));
+                q_box("z_ordcp.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";noa='" + $('#txtNoa').val()+ "';" + r_accy + "_" + r_cno, 'ordcp', "95%", "95%", m_print);
             }
 
             function wrServer(key_value) {
