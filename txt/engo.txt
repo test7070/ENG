@@ -1,0 +1,33 @@
+﻿engno_change:--engno_change
+declare @t_noa nvarchar(20)=[1]
+-------------------------------------------------------------------------------------------------------------------------
+--更新總金額
+update a
+set money=isnull((select sum(money) from engos where noa=a.noa),0)
+,umoney=isnull((select sum(umoney) from engos where noa=a.noa),0)
+from engo a where noa=@t_noa
+
+--計算外包金額
+update a
+set omoney=isnull((select sum(money) from eng3s where engono=a.noa and no2=a.no2),0)
+from engos a where noa=@t_noa
+
+--計算材料成本
+update a
+set cost=isnull((select sum(total) from view_rc2s where engono=a.noa and engono2=a.no2),0)
+from engos a where noa=@t_noa
+
+
+--計算利潤 =金額-費用成本-外包金額-材料成本
+update a
+set profit=money-isnull((select sum(cost) from engow where noa=a.noa),0)-isnull((select sum(omoney+cost) from engos where noa=a.noa),0)
+,income=money-isnull((select sum(money) from engow where noa=a.noa),0)-isnull((select sum(omoney+cost) from engos where noa=a.noa),0)
+,uprofit=umoney-isnull((select sum(cost) from engow where noa=a.noa),0)-isnull((select sum(omoney+cost) from engos where noa=a.noa),0)
+,uincome=umoney-isnull((select sum(money) from engow where noa=a.noa),0)-isnull((select sum(omoney+cost) from engos where noa=a.noa),0)
+from engo a where noa=@t_noa
+
+select * from engo where noa=@t_noa
+select * from engos where noa=@t_noa
+
+;
+--**************************************************************************************************

@@ -21,11 +21,11 @@
             var decbbs = [];
             var decbbm = [];
             var q_readonly = [];
-            var q_readonlys = [['txtPrice', 10, 2, 1], ['txtMount', 10, 2, 1], ['txtMoney', 15, 0, 1]
-            							, ['txtUprice', 10, 2, 1], ['txtUmount', 10, 2, 1], ['txtUmoney', 15, 0, 1]
-            							, ['txtCost', 15, 0, 1], ['txtDays', 10, 0, 1]];
+            var q_readonlys = [];
             var bbmNum = [];
-            var bbsNum = [];
+            var bbsNum = [['txtPrice', 10, 2, 1], ['txtMount', 10, 2, 1], ['txtMoney', 15, 0, 1]
+            							, ['txtUprice', 10, 2, 1], ['txtUmount', 10, 2, 1], ['txtUmoney', 15, 0, 1]
+            							, ['txtCost', 15, 0, 1] ['txtUcost', 15, 0, 1], ['txtDays', 10, 0, 1]];
             var bbmMask = [];
             var bbsMask = [];
             aPop = new Array(
@@ -140,7 +140,7 @@
 	</head>
 	<body>
 		<div  id="dbbs"  >
-			<table id="tbbs" class='tbbs'  border="2"  cellpadding='2' cellspacing='1' style='width:1250px;font-size: 14px;'  >
+			<table id="tbbs" class='tbbs'  border="2"  cellpadding='2' cellspacing='1' style='width:1450px;font-size: 14px;'  >
 				<tr style='color:White; background:#003366;' >
 					<td align="center"><input class="btn"  id="btnPlus" type="button" value='＋' style="font-weight: bold;"  /></td>
 					<td align="center"><a id='lblProductno'> </a></td>
@@ -149,10 +149,11 @@
 					<td align="center"><a id='lblMount'> </a></td>
 					<td align="center"><a id='lblPrice'> </a></td>
 					<td align="center"><a id='lblMoney'> </a></td>
+					<td align="center"><a id='lblCost'> </a></td>
 					<td align="center"><a id='lblUmount'> </a></td>
 					<td align="center"><a id='lblUprice'> </a></td>
 					<td align="center"><a id='lblUmoney'> </a></td>
-					<td align="center"><a id='lblCost'> </a></td>
+					<td align="center"><a id='lblUcost'> </a></td>
 					<td align="center"><a id='lblDays'> </a></td>
 					<td align="center"><a id='lblMemo'> </a></td>
 				</tr>
@@ -160,15 +161,16 @@
 					<td style="width:1%;"><input class="btn"  id="btnMinus.*" type="button" value='－' style="font-weight: bold;"  /></td>
 					<td style="width:10%;"><input class="txt"  id="txtProductno.*" type="text" style="width:98%;"  /></td>
 					<td style="width:20%;"><input class="txt" id="txtProduct.*" type="text" style="width:98%;"   /></td>
-					<td style="width:5%;"><input class="txt" id="txtUnit.*" type="text" style="width:98%;"   /></td>
-					<td style="width:8%;"><input class="txt" id="txtMount.*" type="text" style="width:94%; text-align:right"  /></td>
-					<td style="width:8%;"><input class="txt" id="txtPrice.*" type="text" style="width:94%; text-align:right"  /></td>
-					<td style="width:8%;"><input class="txt" id="txtMoney.*" type="text" style="width:94%; text-align:right"  /></td>
-					<td style="width:8%;"><input class="txt" id="txtUmount.*" type="text" style="width:94%; text-align:right"  /></td>
-					<td style="width:8%;"><input class="txt" id="txtUprice.*" type="text" style="width:94%; text-align:right"  /></td>
-					<td style="width:8%;"><input class="txt" id="txtUmoney.*" type="text" style="width:94%; text-align:right"  /></td>
-					<td style="width:8%;"><input class="txt" id="txtCost.*" type="text" style="width:94%; text-align:right"  /></td>
-					<td style="width:5%;"><input class="txt" id="txtDays.*" type="text" style="width:98%;"   /></td>
+					<td style="width:4%;"><input class="txt" id="txtUnit.*" type="text" style="width:98%;"   /></td>
+					<td style="width:7%;"><input class="txt" id="txtMount.*" type="text" style="width:94%; text-align:right"  /></td>
+					<td style="width:7%;"><input class="txt" id="txtPrice.*" type="text" style="width:94%; text-align:right"  /></td>
+					<td style="width:7%;"><input class="txt" id="txtMoney.*" type="text" style="width:94%; text-align:right"  /></td>
+					<td style="width:7%;"><input class="txt" id="txtCost.*" type="text" style="width:94%; text-align:right"  /></td>
+					<td style="width:7%;"><input class="txt" id="txtUmount.*" type="text" style="width:94%; text-align:right"  /></td>
+					<td style="width:7%;"><input class="txt" id="txtUprice.*" type="text" style="width:94%; text-align:right"  /></td>
+					<td style="width:7%;"><input class="txt" id="txtUmoney.*" type="text" style="width:94%; text-align:right"  /></td>
+					<td style="width:7%;"><input class="txt" id="txtUcost.*" type="text" style="width:94%; text-align:right"  /></td>
+					<td style="width:4%;"><input class="txt" id="txtDays.*" type="text" style="width:98%;"   /></td>
 					<td>
 						<input class="txt" id="txtMemo.*" type="text" style="width:98%;"  />
 						<input id="txtNoq.*" type="hidden" />

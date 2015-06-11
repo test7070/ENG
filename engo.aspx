@@ -22,11 +22,10 @@
             q_desc = 1;
             q_tables = 't';
             var q_name = "engo";
-            var q_readonly = ['txtNoa', 'txtWorker', 'txtWorker2','txtUincome','txtIncome'];
+            var q_readonly = ['txtNoa', 'txtWorker', 'txtWorker2','txtMoney','txtUmoney','txtProfit','txtUprofit'];
             var q_readonlys = ['txtTgg','txtOmoney','txtCost'];
             var q_readonlyt = [];
-            var bbmNum = [['txtMoney', 15, 0, 1],['txtUmoney', 15, 0, 1],['txtProfit', 15, 0, 1],
-            						['txtUincome', 15, 0, 1],['txtIncome', 15, 0, 1]];
+            var bbmNum = [['txtMoney', 15, 0, 1],['txtUmoney', 15, 0, 1],['txtProfit', 15, 0, 1],['txtUprofit', 15, 0, 1]];
             var bbsNum = [['txtMount', 10, 2, 1], ['txtPrice', 10, 2, 1], ['txtMoney', 15, 0, 1],
             						['txtUmount', 10, 2, 1], ['txtUprice', 10, 2, 1], ['txtUmoney', 15, 0, 1],
             						['txtEmoney', 15, 0, 1], ['txtOmoney', 15, 0, 1], ['txtCost', 15, 0, 1]];
@@ -177,10 +176,13 @@
                 //排序------------------------------------------------------------------------------------------------------------
                 var t_bbs=new Array();
 				for (var i = 0; i < q_bbsCount; i++) {
-					if(!emp($('#txtProcess_'+i).val()) || !emp($('#txtWorkno_'+i).val())){
+					if(!emp($('#txtNos_'+i).val()) || !emp($('#txtProduct_'+i).val())){
                 		var t_bbss=new Array();
                 		for (var j = 0; j < fbbs.length; j++) {
-                			t_bbss[fbbs[j]]=$('#'+fbbs[j]+'_'+i).val();
+                			if(fbbs[j].substr(0,3)!='chk')
+                				t_bbss[fbbs[j]]=$('#'+fbbs[j]+'_'+i).val();
+                			else
+                				t_bbss[fbbs[j]]=$('#'+fbbs[j]+'_'+i).prop('checked');
                 		}
                 		t_bbs.push(t_bbss);
                 	}
@@ -191,7 +193,10 @@
 					t_bbs.sort(compare);
 					for (var i = 0; i < t_bbs.length; i++) {
 	               		for (var j = 0; j < fbbs.length; j++) {
-	               			$('#'+fbbs[j]+'_'+i).val(t_bbs[i][fbbs[j]]);
+	               			if(fbbs[j].substr(0,3)!='chk')
+	               				$('#'+fbbs[j]+'_'+i).val(t_bbs[i][fbbs[j]]);
+	               			else
+	               				$('#'+fbbs[j]+'_'+i).prop('checked',t_bbs[i][fbbs[j]]);
 	               		}
 					}
 				}
@@ -702,28 +707,38 @@
 						<td><input id="chkEnda" type="checkbox"/></td>
 					</tr>
 					<tr>
-						<td><span> </span><a id='lblUmoney' class="lbl"> </a></td>
-						<td><input id="txtUmoney" type="text"  class="txt num c1"/></td>
 						<td><span> </span><a id='lblMoney' class="lbl"> </a></td>
 						<td><input id="txtMoney" type="text"  class="txt num c1"/></td>
+						<td><span> </span><a id='lblUmoney' class="lbl"> </a></td>
+						<td><input id="txtUmoney" type="text"  class="txt num c1"/></td>
 						<td align="center" colspan="2">
 							<input id="btnChgprice" type="button" style="float: none;"/>
 							<input id="btnEngow" type="button" style="float: none;"/>
 							<input id="btnWorklogs" type="button" style="float: none;"/>
 						</td>
 					</tr>
+					<!--<tr>
+						<td><span> </span><a id='lblUincome' class="lbl"> </a></td>
+						<td><input id="txtUincome" type="text"  class="txt num c1"/></td>
+						<td><span> </span><a id='lblIncome' class="lbl"> </a></td>
+						<td><input id="txtIncome" type="text"  class="txt num c1"/></td>
+					</tr>-->
 					<tr>
 						<td><span> </span><a id='lblProfit' class="lbl"> </a></td>
 						<td><input id="txtProfit" type="text"  class="txt num c1"/></td>
-						<td><span> </span><a id='lblDenominate' class="lbl"> </a></td>
-						<td><input id="txtDenominate" type="text"  class="txt c1"/></td>
-						<td><span> </span><a id="lblApv" class="lbl"> </a></td>
-						<td><input id="txtApv" type="text"  class="txt c1"/></td>
+						<td><span> </span><a id='lblUprofit' class="lbl"> </a></td>
+						<td><input id="txtUprofit" type="text"  class="txt num c1"/></td>
 						<!--<td><input id="btnEng" type="button" /></td>-->
 					</tr>
 					<tr>
 						<td><span> </span><a id='lblMemo' class="lbl"> </a></td>
 						<td colspan="5"><textarea id="txtMemo" rows="3" cols="10" class="txt c1"> </textarea></td>
+					</tr>
+					<tr>
+						<td><span> </span><a id='lblDenominate' class="lbl"> </a></td>
+						<td><input id="txtDenominate" type="text"  class="txt c1"/></td>
+						<td><span> </span><a id="lblApv" class="lbl"> </a></td>
+						<td><input id="txtApv" type="text"  class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id='lblDirector' class="lbl"> </a></td>
@@ -732,12 +747,6 @@
 						<td><input id="txtManager"  type="text" class="txt c1" /></td>
 						<td><span> </span><a id='lblAccountants' class="lbl"> </a></td>
 						<td><input id="txtAccountants"  type="text" class="txt c1" /></td>
-					</tr>
-					<tr>
-						<td><span> </span><a id='lblUincome' class="lbl"> </a></td>
-						<td><input id="txtUincome" type="text"  class="txt num c1"/></td>
-						<td><span> </span><a id='lblIncome' class="lbl"> </a></td>
-						<td><input id="txtIncome" type="text"  class="txt num c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id='lblWorker' class="lbl"> </a></td>
@@ -765,11 +774,10 @@
 						<td align="center" style="width:90px;"><a id='lblUmount_s'> </a></td>
 						<td align="center" style="width:90px;"><a id='lblUprice_s'> </a></td>
 						<td align="center" style="width:110px;"><a id='lblUmoney_s'> </a></td>
-						<td align="center" style="width:110px;"><a id='lblEmoney_s'> </a></td>
 						<td align="center" style="width:90px;"><a id='lblBdate_s'> </a></td>
 						<td align="center" style="width:90px;"><a id='lblEdate_s'> </a></td>
 						<td align="center" style="width:110px;"><a id='lblChase_s'> </a></td>
-						<td align="center" style="width:40px;"><a id='lblPrt_s'> </a></td>
+						<!--<td align="center" style="width:40px;"><a id='lblPrt_s'> </a></td>-->
 						<td align="center" style="width:40px;"><a id='lblOut_s'> </a></td>
 						<td align="center" style="width:220px;"><a id='lblTgg_s'> </a></td>
 						<td align="center" style="width:110px;"><a id='lblOmomey_s'> </a></td>
@@ -793,14 +801,13 @@
 						<td ><input id="txtUmount.*" type="text" class="txt num" style="width:95%"/></td>
 						<td ><input id="txtUprice.*" type="text" class="txt num" style="width:95%"/></td>
 						<td ><input id="txtUmoney.*" type="text" class="txt num" style="width:95%"/></td>
-						<td ><input id="txtEmoney.*" type="text" class="txt num" style="width:95%"/></td>
 						<td ><input id="txtBdate.*" type="text" class="txt" style="width:95%"/></td>
 						<td ><input id="txtEdate.*" type="text" class="txt" style="width:95%"/></td>
 						<td >
 							<!--<input id="txtChase.*" type="text" class="txt" style="width:95%"/>-->
 							<select id="cmbChase.*" class="txt c1"> </select>
 						</td>
-						<td ><input id="chkPrt.*" type="checkbox" class="txt" style="width:95%"/></td>
+						<!--<td ><input id="chkPrt.*" type="checkbox" class="txt" style="width:95%"/></td>-->
 						<td ><input id="chkOut.*" type="checkbox" class="txt" style="width:95%"/></td>
 						<td >
 							<input id="txtTggno.*" type="text" class="txt" style="width:30%"/>

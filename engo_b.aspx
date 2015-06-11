@@ -44,21 +44,21 @@
 		<div  id="dbbs"  >
 			<table id="tbbs"  border="2"  cellpadding='0' cellspacing='0' style='width:98%' >
 				<tr>
-					<th align="center" > </th>
-					<th align="center" style='color:Blue;' ><a id='lblNoa'> </a></th>
-					<th align="center" style='color:Blue;' ><a id='lblDatea'> </a></th>
-					<th align="center" style='color:Blue;' ><a id='lblEng'> </a></th>
-					<th align="center" style='color:Blue;' ><a id='lblCust'> </a></th>
+					<td align="center" > </td>
+					<td align="center" style='color:Blue;' ><a id='lblEng'> </a></td>
+					<td align="center" style='color:Blue;' ><a id='lblCust'> </a></td>
+					<td align="center" style='color:Blue;' ><a id='lblNoa'> </a></td>
+					<td align="center" style='color:Blue;' ><a id='lblDatea'> </a></td>
 				</tr>
 				<tr>
 					<td style="width:2%;"><input name="sel"  id="radSel.*" type="radio" /></td>
-					<td style="width:20%;"><input class="txt" id="txtNoa.*" type="text" style="width:98%;"  readonly="readonly" /></td>
-					<td style="width:20%;"><input class="txt" id="txtDatea.*" type="text" style="width:98%;"  readonly="readonly" /></td>
 					<td style="width:40%;">
 						<input class="txt" id="txtEngno.*" type="text" style="width:38%;"  readonly="readonly" />
 						<input class="txt" id="txtEng.*" type="text" style="width:55%;"  readonly="readonly" />
 					</td>
 					<td style="width:25%;"><input class="txt" id="txtComp.*" type="text" style="width:98%;"  readonly="readonly" /></td>
+					<td style="width:20%;"><input class="txt" id="txtNoa.*" type="text" style="width:98%;"  readonly="readonly" /></td>
+					<td style="width:20%;"><input class="txt" id="txtDatea.*" type="text" style="width:98%;"  readonly="readonly" /></td>
 				</tr>
 			</table>
 			<!--#include file="../inc/brow_ctrl.inc"-->
