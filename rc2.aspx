@@ -19,8 +19,8 @@
 			var q_name = "rc2";
 			var decbbs = [];
 			var decbbm = [];
-			var q_readonly = ['txtNoa', 'txtAcomp', 'txtTgg', 'txtWorker', 'txtWorker2','txtMoney','txtTotal','txtEng','txtTax'];
-			var q_readonlys = ['txtNoq'];
+			var q_readonly = ['txtNoa', 'txtAcomp', 'txtComp', 'txtWorker', 'txtWorker2','txtMoney','txtTotal','txtEng','txtTax'];
+			var q_readonlys = ['txtNoq','txtOrdeno','txtNo2'];
 			var bbmNum = [];
 			var bbsNum = [];
 			var bbmMask = [];
@@ -31,7 +31,7 @@
 			brwNowPage = 0;
 			brwKey = 'datea';
 			aPop = new Array(
-				['txtTggno', 'lblTgg', 'tgg', 'noa,nick,paytype,trantype', 'txtTggno,txtTgg,txtPaytype,cmbTrantype', 'tgg_b.aspx'],
+				['txtTggno', 'lblTgg', 'tgg', 'noa,comp,paytype,trantype', 'txtTggno,txtComp,txtPaytype,cmbTrantype', 'tgg_b.aspx'],
 				['txtStoreno_', 'btnStoreno_', 'store', 'noa,store', 'txtStoreno_,txtStore_', 'store_b.aspx'],
 				['txtProductno_', 'btnProduct_', 'ucc', 'noa,product,unit', 'txtProductno_,txtProduct_,txtUnit_', 'ucc_b.aspx'],
 				['txtEngno', 'lblEng', 'engo', 'engno,eng', 'txtEngno,txtEng', 'engo_b.aspx']
@@ -193,6 +193,8 @@
 							$('#combPaytype').val(ordc[0].paytype);
 							$('#txtPaytype').val(ordc[0].pay);
 							$('#cmbTrantype').val(ordc[0].trantype);
+							$('#txtEngno').val(ordc[0].engno);
+							$('#txtEng').val(ordc[0].eng);
 						}
 						break;
 					case 'startdate':
@@ -683,7 +685,7 @@
 					<tr>
 						<td><span> </span><a id='lblTgg' class="lbl btn"> </a></td>
 						<td><input id="txtTggno" type="text" class="txt c1" /></td>
-						<td colspan="3"><input id="txtTgg" type="text" class="txt c1"/></td>
+						<td colspan="3"><input id="txtComp" type="text" class="txt c1"/></td>
 						<td><span> </span><a id='lblOrdc' class="lbl btn"> </a></td>
 						<td><input id="txtOrdcno" type="text" class="txt c1"/></td>
 					</tr>
