@@ -57,6 +57,12 @@
                     sum();
                 });
                 
+                $('#txtDatea').blur(function() {
+		         	if(!emp($('#txtDatea').val())&&(q_cur==1 || q_cur==2)){
+		         		$('#txtMon').val($('#txtDatea').val().substr(0,6));
+					}
+                });
+                
                 $('#btnVcc').click(function(e) {
                     if(q_cur==1 || q_cur==2){
 						var t_engno = $.trim($('#txtEngno').val());
@@ -85,7 +91,7 @@
                             t_money -= q_float('txtMoney_' + i);
                         else
                             t_money += q_float('txtMoney_' + i);
-                        //t_money+=q_float('txtChgs_' + i);
+                        t_money-=q_float('txtChgs_' + i);
                     }
                     var t_unpay, t_pay = 0;
                     for (var i = 0; i < q_bbsCount; i++) {
@@ -370,7 +376,7 @@
                      t_money -= q_float('txtMoney_' + j);
                      else*/
                     t_money += q_float('txtMoney_' + j);
-                    //t_money+=q_float('txtChgs_' + j);
+                    t_money-=q_float('txtChgs_' + j);
                     t_sale += q_float('txtUnpayorg_' + j);
                     t_pay += q_float('txtPaysale_' + j);
                 }
@@ -398,6 +404,11 @@
                     opacity : 0
                 });
                 $('#txtMon').val($.trim($('#txtMon').val()));
+                
+                if(emp($('#txtMon').val())){
+					$('#txtMon').val($('#txtDatea').val().substr(0,6));
+				}
+				
                 if ($('#txtMon').val().length > 0 && !(/^[0-9]{3}\/(?:0?[1-9]|1[0-2])$/g).test($('#txtMon').val())) {
                     alert(q_getMsg('lblMon') + '錯誤。');
                     Unlock(1);
@@ -419,17 +430,14 @@
                 for (var i = 0; i < q_bbsCount; i++) {
                     $('#txtCheckno_' + i).val($.trim($('#txtCheckno_' + i).val()));
                     t_money = q_float('txtMoney_' + i);
-                    //t_chgs = q_float('txtChgs_' + i);
-                    if ($.trim($('#txtAcc1_' + i).val()).length == 0 && t_money > 0) {//+ t_chgs
+                    t_chgs = q_float('txtChgs_' + i);
+                    if ($.trim($('#txtAcc1_' + i).val()).length == 0 && t_money - t_chgs > 0) { 
                         t_err = true;
                         break;
                     }
-                    if (t_money != 0 || i == 0)
-                        t_mon = $('#txtRc2no_' + i).val();
                 }
                 if (t_err) {
-                    alert(m_empty + q_getMsg('lblAcc1') + q_trv(t_money));
-                    //+ t_chgs
+                    alert(m_empty + q_getMsg('lblAcc1') + q_trv(t_money - t_chgs));
                     Unlock(1);
                     return false;
                 }
@@ -437,11 +445,11 @@
                 var t_opay = q_float('txtOpay');
                 var t_unopay = q_float('txtUnopay');
                 var t1 = q_float('txtPaysale') + q_float('txtOpay') - q_float('txtUnopay');
-                var t2 = q_float('txtTotal');
-                //+t_chgs
+                var t2 = q_float('txtTotal') - t_chgs;
+                
                 if (t1 != t2) {
-                    //alert('付款金額  ＋ 費用 ＝' + q_trv(t2) + '\r 【不等於】 沖帳金額 ＋ 預付 －　預付沖帳 ＝' + q_trv(t1) + '\r【差額】=' + Math.abs(t1 - t2));
-                    alert('付款金額  ＝' + q_trv(t2) + '\r 【不等於】 沖帳金額 ＋ 預付 －　預付沖帳 ＝' + q_trv(t1) + '\r【差額】=' + Math.abs(t1 - t2));
+                    alert('付款金額  － 費用 ＝' + q_trv(t2) + '\r 【不等於】 沖帳金額 ＋ 預付 －　預付沖帳 ＝' + q_trv(t1) + '\r【差額】=' + Math.abs(t1 - t2));
+                    //alert('付款金額  ＝' + q_trv(t2) + '\r 【不等於】 沖帳金額 ＋ 預付 －　預付沖帳 ＝' + q_trv(t1) + '\r【差額】=' + Math.abs(t1 - t2));
                     Unlock(1);
                     return false;
                 }
@@ -625,9 +633,7 @@
             }
 
             function btnPrint() {
-                q_box("z_payp.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({
-                    noa : trim($('#txtNoa').val())
-                }) + ";" + r_accy + "_" + r_cno, 'pay', "95%", "95%", m_print);
+                q_box("z_payp.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + $('#txtNoa').val() + ";" + r_accy + "_" + r_cno, 'pay', "95%", "95%", m_print);
             }
 
             function wrServer(key_value) {

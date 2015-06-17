@@ -76,6 +76,12 @@
 				$('#btnBank').click(function() {
 					q_box('bank.aspx' + "?;;;;" + r_accy + ";noa=" + trim($('#txtNoa').val()), '', "95%", "95%", "銀行主檔");
 				});
+				
+				$('#txtDatea').blur(function() {
+		         	if(!emp($('#txtDatea').val())&&(q_cur==1 || q_cur==2)){
+		         		$('#txtMon').val($('#txtDatea').val().substr(0,6));
+					}
+                });
 
 				$('#btnAuto').click(function(e) {
 					/// 自動沖帳
@@ -92,7 +98,7 @@
 					for (var i = 0; i < q_bbsCount; i++) {
 						t_money += q_float('txtMoney_' + i);
 
-						t_money += q_float('txtChgs_' + i);
+						t_money -= q_float('txtChgs_' + i);
 					}
 
 					var t_unpay, t_pay = 0;
@@ -185,7 +191,7 @@
 					 t_money -= q_float('txtMoney_' + j);
 					 else*/
 					t_money += q_float('txtMoney_' + j);
-					t_money += q_float('txtChgs_' + j);
+					t_money -= q_float('txtChgs_' + j);
 					t_sale += q_float('txtUnpayorg_' + j);
 					t_pay += q_float('txtPaysale_' + j);
 				}
@@ -449,7 +455,7 @@
 
 					t_money = q_float('txtMoney_' + i);
 					t_chgs = q_float('txtChgs_' + i);
-					if ($.trim($('#txtAcc1_' + i).val()).length == 0 && t_money + t_chgs > 0) {
+					if ($.trim($('#txtAcc1_' + i).val()).length == 0 && t_money - t_chgs > 0) {
 						t_err = true;
 						break;
 					}
@@ -478,7 +484,7 @@
 
 				sum();
 				if (t_err) {
-					alert(m_empty + q_getMsg('lblAcc1') + q_trv(t_money + t_chgs));
+					alert(m_empty + q_getMsg('lblAcc1') + q_trv(t_money - t_chgs));
 					Unlock(1);
 					return false;
 				}
@@ -486,9 +492,9 @@
 				var t_opay = q_float('txtOpay');
 				var t_unopay = q_float('txtUnopay');
 				var t1 = q_float('txtPaysale') + q_float('txtOpay') - q_float('txtUnopay');
-				var t2 = q_float('txtTotal') + t_chgs;
+				var t2 = q_float('txtTotal') - t_chgs;
 				if (t1 != t2) {
-					alert('收款金額 ＋ 費用 ＝' + q_trv(t2) + '\r 【不等於】 沖帳金額 ＋ 預收 －　預收沖帳 ＝' + q_trv(t1) + '\r【差額】=' + Math.abs(t1 - t2));
+					alert('收款金額 - 費用 ＝' + q_trv(t2) + '\r 【不等於】 沖帳金額 ＋ 預收 －　預收沖帳 ＝' + q_trv(t1) + '\r【差額】=' + Math.abs(t1 - t2));
 					Unlock(1);
 					return false;
 				}
