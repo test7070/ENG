@@ -25,7 +25,7 @@
             var q_readonly = ['txtNoa', 'txtWorker', 'txtWorker2','txtMoney','txtUmoney','txtProfit','txtUprofit'];
             var q_readonlys = ['txtTgg','txtOmoney','txtCost'];
             var q_readonlyt = [];
-            var bbmNum = [['txtMoney', 15, 0, 1],['txtUmoney', 15, 0, 1],['txtProfit', 15, 0, 1],['txtUprofit', 15, 0, 1]];
+            var bbmNum = [['txtMoney', 15, 0, 1],['txtUmoney', 15, 0, 1]];//,['txtProfit', 15, 0, 1],['txtUprofit', 15, 0, 1]
             var bbsNum = [['txtMount', 10, 2, 1], ['txtPrice', 10, 2, 1], ['txtMoney', 15, 0, 1],
             						['txtUmount', 10, 2, 1], ['txtUprice', 10, 2, 1], ['txtUmoney', 15, 0, 1],
             						['txtEmoney', 15, 0, 1], ['txtOmoney', 15, 0, 1], ['txtCost', 15, 0, 1]];
@@ -38,7 +38,7 @@
             brwList = [];
             brwNowPage = 0;
             brwKey = 'Datea';
-            brwCount2 = 11;
+            brwCount2 = 10;
             aPop = new Array(['txtTggno_', '', 'tgg', 'noa,comp', 'txtTggno_,txtTgg_', 'tgg_b.aspx']);
 
             $(document).ready(function() {
@@ -63,7 +63,7 @@
                 }
                 q_tr('txtMoney',tt_total);
                 q_tr('txtUmoney',tt_utotal);
-                q_tr('txtProfit',q_sub(tt_total,tt_utotal),0);
+                //q_tr('txtProfit',q_sub(tt_total,tt_utotal),0);
             };
 
             function main() {
@@ -723,13 +723,13 @@
 						<td><span> </span><a id='lblIncome' class="lbl"> </a></td>
 						<td><input id="txtIncome" type="text"  class="txt num c1"/></td>
 					</tr>-->
-					<tr>
+					<!--<tr>
 						<td><span> </span><a id='lblProfit' class="lbl"> </a></td>
 						<td><input id="txtProfit" type="text"  class="txt num c1"/></td>
 						<td><span> </span><a id='lblUprofit' class="lbl"> </a></td>
 						<td><input id="txtUprofit" type="text"  class="txt num c1"/></td>
-						<!--<td><input id="btnEng" type="button" /></td>-->
-					</tr>
+						<td><input id="btnEng" type="button" /></td>
+					</tr>-->
 					<tr>
 						<td><span> </span><a id='lblMemo' class="lbl"> </a></td>
 						<td colspan="5"><textarea id="txtMemo" rows="3" cols="10" class="txt c1"> </textarea></td>
