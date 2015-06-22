@@ -25,7 +25,7 @@
             var bbmNum = [];
             var bbsNum = [['txtPrice', 10, 2, 1], ['txtMount', 10, 2, 1], ['txtMoney', 15, 0, 1]
             							, ['txtUprice', 10, 2, 1], ['txtUmount', 10, 2, 1], ['txtUmoney', 15, 0, 1]
-            							, ['txtCost', 15, 0, 1] ['txtUcost', 15, 0, 1], ['txtDays', 10, 0, 1]];
+            							, ['txtCost', 10, 0, 1], ['txtUcost', 10, 0, 1], ['txtDays', 10, 0, 1]];
             var bbmMask = [];
             var bbsMask = [];
             aPop = new Array(

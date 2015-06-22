@@ -144,6 +144,11 @@
             function q_boxClose(s2) {
                 var ret;
                 switch (b_pop) {
+                	case 'engow':
+                		if($('#txtNoa').val().length != 0 && $('#txtNoa').val() != "AUTO"){
+							q_func('qtxt.query.engnochange', 'engo.txt,engno_change,' + encodeURI($('#txtNoa').val()));
+						}
+                		break;
                     case q_name + '_s':
                         q_boxClose2(s2);
                         break;
@@ -363,6 +368,15 @@
                 $('#txt' + bbmKey[0].substr(0, 1).toUpperCase() + bbmKey[0].substr(1)).val(key_value);
                 _btnOk(key_value, bbmKey[0], bbsKey[1], '', 2);
             }
+            
+            function q_stPost() {
+				if (!(q_cur == 1 || q_cur == 2))
+					return false;
+				
+				if($('#txtNoa').val().length != 0 && $('#txtNoa').val() != "AUTO"){
+					q_func('qtxt.query.engnochange', 'engo.txt,engno_change,' + encodeURI($('#txtNoa').val()));
+				}
+			}
 
             function bbsSave(as) {
                 if (!as['product'] && !as['nos']) {
@@ -449,14 +463,47 @@
                 _btnCancel();
             }
             
-            /*function q_funcPost(t_func, result) {
+            function q_funcPost(t_func, result) {
                 switch(t_func) {
-                	case 'qtxt.query.changeprice':
+                	/*case 'qtxt.query.changeprice':
                 		var s2=new Array('engo_s',"where=^^noa<='"+$('#txtNoa').val()+"' ^^ ");
 						q_boxClose2(s2);
-                	break;
+                	break;*/
+                	case 'qtxt.query.engnochange':
+                		var as = _q_appendData("tmp0", "", true, true);
+						if (as[0] != undefined) {
+							$('#txtMoney').val(FormatNumber(as[0].money));
+							$('#txtUmoney').val(FormatNumber(as[0].umoney));
+							$('#txtProfit').val(FormatNumber(as[0].profit));
+							$('#txtIncome').val(FormatNumber(as[0].income));
+							$('#txtUprofit').val(FormatNumber(as[0].uprofit));
+							$('#txtUincome').val(FormatNumber(as[0].uincome));
+                		}
+                		for (var i = 0; i < q_bbtCount; i++) {
+	                		for (var j=0;j<as.length;j++){
+	                			if(as[j].no2==$('#txtNo2_'+i).val() && $('#txtNoa').val()==as[j].noa){
+	                				$('#txtOmoney_'+i).val(FormatNumber(as[j].omoney));
+	                				$('#txtCost_'+i).val(FormatNumber(as[j].cost));
+									break;
+								}
+	                		}
+                		}
+                		break;
                 }
-			}*/
+			}
+			
+			function FormatNumber(n) {
+				var xx = "";
+				if (n < 0) {
+					n = Math.abs(n);
+					xx = "-";
+				}
+				n += "";
+				var arr = n.split(".");
+				var re = /(\d{1,3})(?=(\d{3})+$)/g;
+				return xx + arr[0].replace(re, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
+			}
+			
 		</script>
 		<style type="text/css">
             #dmain {

@@ -21,13 +21,15 @@ from engos a where noa=@t_noa
 --計算利潤 =金額-費用成本-外包金額-材料成本
 update a
 set profit=money-isnull((select sum(cost) from engow where noa=a.noa),0)-isnull((select sum(omoney+cost) from engos where noa=a.noa),0)
-,income=money-isnull((select sum(money) from engow where noa=a.noa),0)-isnull((select sum(omoney+cost) from engos where noa=a.noa),0)
-,uprofit=umoney-isnull((select sum(cost) from engow where noa=a.noa),0)-isnull((select sum(omoney+cost) from engos where noa=a.noa),0)
-,uincome=umoney-isnull((select sum(money) from engow where noa=a.noa),0)-isnull((select sum(omoney+cost) from engos where noa=a.noa),0)
+,income=money-isnull((select sum(cost) from engow where noa=a.noa),0)-isnull((select sum(omoney+cost) from engos where noa=a.noa),0)
+,uprofit=umoney-isnull((select sum(ucost) from engow where noa=a.noa),0)-isnull((select sum(omoney+cost) from engos where noa=a.noa),0)
+,uincome=umoney-isnull((select sum(ucost) from engow where noa=a.noa),0)-isnull((select sum(omoney+cost) from engos where noa=a.noa),0)
 from engo a where noa=@t_noa
 
-select * from engo where noa=@t_noa
-select * from engos where noa=@t_noa
+select a.noa,b.no2, 
+a.money,a.umoney,a.profit,a.income,a.uprofit,a.uincome
+,b.omoney,b.cost
+from engo a left join engos b on a.noa=b.noa where a.noa=@t_noa
 
 ;
 --**************************************************************************************************
