@@ -145,9 +145,11 @@
                 var ret;
                 switch (b_pop) {
                 	case 'engow':
-                		if($('#txtNoa').val().length != 0 && $('#txtNoa').val() != "AUTO"){
-							q_func('qtxt.query.engnochange', 'engo.txt,engno_change,' + encodeURI($('#txtNoa').val()));
-						}
+		                setTimeout(function () {
+					        if($('#txtNoa').val().length != 0 && $('#txtNoa').val() != "AUTO"){
+								q_func('qtxt.query.engnochange', 'engo.txt,engno_change,' + encodeURI($('#txtNoa').val()));
+							}
+					    }, 1500);
                 		break;
                     case q_name + '_s':
                         q_boxClose2(s2);
