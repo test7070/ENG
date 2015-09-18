@@ -103,9 +103,6 @@
 				//後面有需要的公司在顯示
 				$('.btnUcam').hide();// 嘜頭
 				$('#btnCustm').hide();//稅務資料
-				if (q_getPara('sys.project').toUpperCase()=='XY'){
-					$('#btnCustm').show();
-				}
 
 				$('#btnUcam').click(function() {
 					t_where = "custno='" + $('#txtNoa').val() + "'";
@@ -126,9 +123,7 @@
 						return;
 					} else {
 						t_where = "noa='" + $('#txtNoa').val() + "'";
-						if (q_getPara('sys.project').toUpperCase()=='XY'){
-							q_box("custm_xy.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'custm', "600px", "700px", q_getMsg('btnCustm'));
-						}
+						q_box("custm_xy.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'custm', "600px", "700px", q_getMsg('btnCustm'));	
 					}
 				});
 				
@@ -162,32 +157,6 @@
 						q_box("usecrd.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'usecrd', "95%", "450px", q_getMsg('btnUsecrd'));
 					}
 				});
-				
-				$('#txtXyNoa1').click(function(){
-					if (q_cur==1 )
-						q_msg($('#txtXyNoa1'), "請輸入客戶拼音前兩碼或客戶總店編號");
-				});
-				
-				$('#txtXyNoa2').click(function(){
-					if (q_cur==1)
-						q_msg($('#txtXyNoa2'), "請輸入客戶分店編號或流水號(空白)");
-				});
-				
-				$('#txtXyComp1').change(function(){
-					if (q_cur==1 && $('#txtXyNoa1').val().length<=2 && $('#txtXyComp1').val().length>0){
-						//讀羅馬拼音
-						var t_where = "where=^^ ['"+$('#txtXyComp1').val() +"')  ^^";
-						q_gt('cust_xy', t_where, 0, 0, 0, "XY_cust_getpy", r_accy);
-					}
-				});
-				
-				/*$('#btnTmpcustno_xy').click(function(){
-					xy_newnoa='';
-					//讀羅馬拼音>產生最新編號>最後更換noa
-					var t_where = "where=^^ ['"+$('#txtComp').val() +"')  ^^";
-					q_gt('cust_xy', t_where, 0, 0, 0, "XY_newcust_getpy", r_accy);
-				});*/
-				
 			}
 			
 			var xy_newnoa=''; 
@@ -229,92 +198,6 @@
 							q_gt(q_name, q_content, q_sqlCount, 1);
 						}
 						break;
-					case 'XY_cust_getpy':
-						var as = _q_appendData("cust", "", true);
-						if(as[0] != undefined){
-							var tmp=as[0].Column1;
-							//排除特殊字元
-							tmp=replaceAll(as[0].Column1,"'","");
-							tmp=replaceAll(as[0].Column1," ","");
-							tmp=replaceAll(as[0].Column1,".","");
-							tmp=replaceAll(as[0].Column1,"(","");
-							tmp=replaceAll(as[0].Column1,"+","");
-							tmp=replaceAll(as[0].Column1,"-","");
-							tmp=replaceAll(as[0].Column1,"*","");
-							tmp=replaceAll(as[0].Column1,"/","");
-							tmp=replaceAll(as[0].Column1,"~","");
-							tmp=replaceAll(as[0].Column1,"!","");
-							tmp=replaceAll(as[0].Column1,"@","");
-							tmp=replaceAll(as[0].Column1,"#","");
-							tmp=replaceAll(as[0].Column1,"$","");
-							tmp=replaceAll(as[0].Column1,"%","");
-							tmp=replaceAll(as[0].Column1,"^","");
-							tmp=replaceAll(as[0].Column1,"&","");
-							
-							if(tmp.length==1)
-								tmp=tmp+'Z';
-							
-							$('#txtXyNoa1').val(tmp.substr(0,2));
-						}
-						break;
-					/*case 'XY_newcust_getpy':
-						var as = _q_appendData("cust", "", true);
-						if(as[0] != undefined){
-							xy_newnoa=as[0].Column1.substr(0,2);
-							//讀取最新的流水號
-							t_where = "where=^^ charindex('" + xy_newnoa + "',noa)=1 and len(noa)<=5 ^^";
-							q_gt('cust', t_where, 0, 0, 0, "XY_newcust_Autonumber", r_accy);
-						}else{
-							alert('轉正式客戶資料錯誤請通知工程師維護!!');
-						}
-						break;
-					case 'XY_newcust_Autonumber':
-						var as = _q_appendData("cust", "", true);
-						if(as[0] != undefined){
-							var noa_seq=('000'+((isNaN(dec(as[as.length-1].noa.substr(-3)))?0:dec(as[as.length-1].noa.substr(-3)))+1)).substr(-3);
-							xy_newnoa=xy_newnoa+noa_seq;
-						}else{
-							xy_newnoa=xy_newnoa+'001';
-						}
-						//更換noa
-						if(!emp($('#txtNoa').val()) && $('#txtNoa').val().substr(0,2)=='##'){
-							var t_paras = $('#txtNoa').val()+ ';'+xy_newnoa;
-							q_func('qtxt.query.change_tmpcustno', 'cust_ucc_xy.txt,change_tmpcustno,' + t_paras);
-							$('#btnTmpcustno_xy').attr('disabled', 'disabled');
-						}
-						break;*/
-					case 'XY_AutoCustno1'://總店流水號 沒有分店
-						var as = _q_appendData("cust", "", true);
-						if(as[0] != undefined){
-							var noa_seq=('000'+((isNaN(dec(as[as.length-1].noa.substr(-3)))?0:dec(as[as.length-1].noa.substr(-3)))+1)).substr(-3);
-							$('#txtXyNoa1').val($('#txtXyNoa1').val()+noa_seq);
-						}else{
-							$('#txtXyNoa1').val($('#txtXyNoa1').val()+'001');
-						}
-						btnOk();
-						break;
-					case 'XY_AutoCustno2'://總店 分店流水號
-						var as = _q_appendData("cust", "", true);
-						if(as[0] != undefined){
-							var noa_seq=('000'+((isNaN(dec(as[as.length-1].noa.substr(-3)))?0:dec(as[as.length-1].noa.substr(-3)))+1)).substr(-3);
-							$('#txtXyNoa1').val($('#txtXyNoa1').val()+noa_seq);
-							$('#txtXyNoa2').val('001');
-						}else{
-							$('#txtXyNoa1').val($('#txtXyNoa1').val()+'001');
-							$('#txtXyNoa2').val('001');
-						}
-						btnOk();
-						break;
-					case 'XY_AutoCustno3'://分店流水號
-						var as = _q_appendData("cust", "", true);
-						if(as[0] != undefined){
-							var noa_seq=('000'+((isNaN(dec(as[as.length-1].noa.substr(-3)))?0:dec(as[as.length-1].noa.substr(-3)))+1)).substr(-3);
-							$('#txtXyNoa2').val(noa_seq);
-						}else{
-							$('#txtXyNoa2').val('001');
-						}
-						btnOk();
-						break;
 					case q_name:
 						if (q_cur == 4)
 							q_Seek_gtPost();
@@ -348,31 +231,6 @@
 				
 				$('#txtNoa').focus();
 				refreshBbm();
-				
-				if (q_getPara('sys.project').toUpperCase()=='XY'){
-					var t_noa='',t_comp='',t_comp2='';
-					if($('#txtNoa').val()!=''){
-						t_noa=$('#txtNoa').val();
-						if(t_noa.indexOf('-')>-1 && t_noa.length>5){
-							t_comp=$('#txtComp').val().split('-')[0];
-							if($('#txtComp').val().indexOf('-')>-1)
-								t_comp2=$('#txtComp').val().split('-')[1];	
-							t_noa=t_noa.split('-')[0];
-						}else{
-							t_noa=$('#txtNoa').val();
-							t_comp=$('#txtComp').val();
-						}
-					}
-					
-					$('#txtNoa').val('').hide();
-					$('#txtComp').val('').hide();
-					$('#txtXyNoa1').val(t_noa).show();
-					$('#txtXyNoa2').val('').show();
-					$('#txtXyComp1').val(t_comp).show();
-					$('#txtXyComp2').val(t_comp2).show();
-					$('#lblXyNoa2').val('').show();
-					$('#lblXyComp2').val('').show();
-				}
 			}
 
 			function btnModi() {
@@ -424,14 +282,7 @@
 					$('#txtKdate').val(q_date());
 					
 				$('#txtWorker').val(r_name);
-				
-				if (q_getPara('sys.project').toUpperCase()=='XY'){
-					$('#txtConntel').val($('#textConn').val());
-					$('#txtBillmemo').val($('#textTrantime').val());
-					var t_invomemo=$('#textIsvcc').val()+'##'+$('#textIsinvo').val()+'##'+$('#textIstax').val()+'##'+$('#textCheckvcc').val()+'##'+$('#textIspost').val()+'##'+$('#textTranprice').val();
-					$('#txtInvomemo').val(t_invomemo);
-				}
-				
+		
 				if (q_cur == 1) {
 					t_where = "where=^^ noa='" + $('#txtNoa').val() + "'^^";
 					q_gt('cust', t_where, 0, 0, 0, "checkCustno_btnOk", r_accy);
@@ -454,26 +305,7 @@
 			function refresh(recno) {
 				_refresh(recno);
 				refreshBbm();
-				if (q_getPara('sys.comp').indexOf('英特瑞') > -1 || q_getPara('sys.comp').indexOf('安美得') > -1)
-					$('.it').css('text-align', 'left');
 				
-				if (q_getPara('sys.project').toUpperCase()=='XY'){
-					$('.isXY').show();
-					/*if($('#txtNoa').val().substr(0,2)=='##'){
-						$('#btnTmpcustno_xy').show();
-					}else{
-						$('#btnTmpcustno_xy').hide();
-					}*/
-				}else{
-					$('.isXY').hide();
-					//$('#btnTmpcustno_xy').hide();
-				}
-				
-				if (q_getPara('sys.project').toUpperCase()=='FE'){
-					$('.isFE').show();
-				}else{
-					$('.isFE').hide();
-				}
 			}
 
 			function refreshBbm() {
@@ -552,35 +384,10 @@
 			function btnCancel() {
 				_btnCancel();
 			}
-
-			function returnparent() {
-				if ((window.parent.q_name == 'quat' || window.parent.q_name == 'orde' ) && q_getPara('sys.project').toUpperCase()=='XY' && window.parent.q_cur==1) {
-					var wParent = window.parent.document;
-					wParent.getElementById("txtCustno").value = $('#txtNoa').val();
-					wParent.getElementById("txtComp").value = $('#txtComp').val();
-					wParent.getElementById("txtNick").value = $('#txtNick').val();
-					wParent.getElementById("txtPaytype").value = $('#txtPaytype').val();
-					wParent.getElementById("txtTel").value = $('#txtTel').val();
-					wParent.getElementById("txtFax").value = $('#txtFax').val();
-					wParent.getElementById("cmbTrantype").value = $('#cmbTrantype').val();
-					wParent.getElementById("txtPost").value = $('#txtZip_comp').val();
-					wParent.getElementById("txtAddr").value = $('#txtAddr_comp').val();
-					wParent.getElementById("txtSalesno").value = $('#txtSalesno').val();
-					wParent.getElementById("txtSales").value = $('#txtSales').val();
-				}
-			}
 			
 			function q_funcPost(t_func, result) {
                 switch(t_func) {
-                	/*case 'qtxt.query.change_tmpcustno':
-                		$('#btnTmpcustno_xy').removeAttr('disabled');
-						alert('已轉正式客戶!!。');
-						var s2=[];
-						s2[0]=q_name + '_s';
-						s2[1]="where=^^ noa='"+xy_newnoa+"' ^^"
-						q_boxClose2(s2);
-						xy_newnoa='';
-						break;*/
+                	
 				}
 			}
 		</script>
@@ -739,12 +546,7 @@
 				<table class="tbbm" id="tbbm" border="0" cellpadding='2' cellspacing='5'>
 					<tr>
 						<td><span> </span><a id='lblNoa' class="lbl"> </a></td>
-						<td>
-							<input id="txtNoa" type="text" class="txt c1"/>
-							<input id="txtXyNoa1" type="text" class="txt c6" style="width:60px;display:none;"/>
-							<a id='lblXyNoa2' class="lbl" style="display:none;float: left;"> 分店<span> </span></a>
-							<input id="txtXyNoa2" type="text" class="txt c6" style="width:40px;display:none;"/>
-						</td>
+						<td><input id="txtNoa" type="text" class="txt c1"/></td>
 						<td><span> </span><a id='lblSerial' class="lbl"> </a></td>
 						<td><input id="txtSerial" type="text" class="txt c1"/></td>
 						<td>
@@ -762,12 +564,7 @@
 					</tr>
 					<tr>
 						<td><span> </span><a id='lblComp' class="lbl"> </a></td>
-						<td colspan='3'>
-							<input id="txtComp" type="text" class="txt c7"/>
-							<input id="txtXyComp1" type="text" class="txt c6" style="display:none;"/>
-							<a id='lblXyComp2' class="lbl" style="display:none;float: left;">　分店<span> </span></a>
-							<input id="txtXyComp2" type="text" class="txt c2" style="display:none;"/>
-						</td>
+						<td colspan='3'><input id="txtComp" type="text" class="txt c7"/></td>
 						<td><span> </span><a id='lblNick' class="lbl"> </a></td>
 						<td><input id="txtNick" type="text" class="txt c1"/></td>
 					</tr>
@@ -796,12 +593,6 @@
 						<td colspan='3'><input id="txtFax" type="text" class="txt c7"/></td>
 						<td><span> </span><a id='lblMobile' class="lbl"> </a></td>
 						<td><input id="txtMobile" type="text" class="txt c1"/></td>
-					</tr>
-					<tr class="isXY" style="display: none;">
-						<td><span> </span><a class="lbl isXY" style="display: none;">連絡人員</a></td>
-						<td colspan='3'><input id="textConn" type="text" class="txt c7 isXY "/></td>
-						<td><span> </span><a class="lbl isXY" style="display: none;">交貨時間</a></td>
-						<td><input id="textTrantime" type="text" class="txt c1 isXY"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id='lblInvoicetitle' class="lbl"> </a></td>
@@ -833,16 +624,15 @@
 						<td colspan='5'><input id="txtEmail" type="text" class="txt c7"/></td>
 					</tr>
 					<tr>
-						<td class="isFE" colspan="2"><input id="btnUsecrd" type="button"/></td>
 						<td><span> </span><a id="lblSales" class="lbl btn"> </a></td>
 						<td>
 							<input id="txtSalesno" type="text" class="txt c6"/>
 							<input id="txtSales" type="text" class="txt c6"/>
 						</td>
-						<td colspan="2"></td>
+						<td colspan="2"> </td>
 						<td><span> </span><a id='lblUacc1' class="lbl"> </a></td>
 						<td><input id="txtUacc1" type="text" class="txt c1"/></td>
-<!-- 						<td><span> </span><a id='lblUacc4' class="lbl"> </a></td>
+						<!--<td><span> </span><a id='lblUacc4' class="lbl"> </a></td>
 						<td><input id="txtUacc4" type="text" class="txt c1"/></td> -->
 					</tr>
 					<tr>
@@ -854,7 +644,7 @@
 						<td><input id="txtUacc2" type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
-<!-- 						<td><span> </span><a id='lblDueday' class="lbl"> </a></td>
+						<!--<td><span> </span><a id='lblDueday' class="lbl"> </a></td>
 						<td><input id="txtDueday" type="text" class="txt num c1"/></td>
 						<td><span> </span><a id='lblGetdate' class="lbl"> </a></td>
 						<td><input id="txtGetdate" type="text" class="txt c1"/></td> -->
@@ -867,22 +657,6 @@
 						</td>
 						<td><span> </span><a id='lblUacc3' class="lbl"> </a></td>
 						<td><input id="txtUacc3" type="text" class="txt c1"/></td>
-					</tr>
-					<tr class="isXY" style="display: none;">
-						<td><span> </span><a class="lbl isXY" style="display: none;">貨單開立</a></td>
-						<td><input id="textIsvcc" type="text" class="txt c1 isXY "/></td>
-						<td><span> </span><a class="lbl isXY" style="display: none;">課稅方式</a></td>
-						<td><input id="textIstax" type="text" class="txt c1 isXY"/></td>
-						<td><span> </span><a class="lbl isXY" style="display: none;">驗單需求</a></td>
-						<td><input id="textCheckvcc" type="text" class="txt c1 isXY"/></td>
-					</tr>
-					<tr class="isXY" style="display: none;">
-						<td><span> </span><a class="lbl isXY" style="display: none;">發票開立</a></td>
-						<td><input id="textIsinvo" type="text" class="txt c1 isXY"/></td>
-						<td><span> </span><a class="lbl isXY" style="display: none;">回郵</a></td>
-						<td><input id="textIspost" type="text" class="txt c1 isXY "/></td>
-						<td><span> </span><a class="lbl isXY" style="display: none;">運費單價</a></td>
-						<td><input id="textTranprice" type="text" class="txt num c1 isXY"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id='lblMemo' class="lbl"> </a></td>
