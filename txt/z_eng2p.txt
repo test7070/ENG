@@ -44,7 +44,7 @@ declare @result table(
 	,b.engono,b.no2,ROW_NUMBER() over (partition by a.noa order by a.noa,b.noq),0
 	from eng2 a left join eng2s b on a.noa=b.noa
 	outer apply (select * from engos where noa=b.engono and no2=b.no2) o
-	outer apply (select sum(mount) bmount,sum(money) bmoney from eng2s where engono=b.engono and no2=b.no2 and datea<a.datea) d
+	outer apply (select sum(bb.mount) bmount,sum(bb.money) bmoney from eng2 ba left join eng2s bb on ba.noa=bb.noa where bb.engono=b.engono and bb.no2=b.no2 and ba.datea<a.datea) d
 	where a.noa between @t_bnoa and @t_enoa
 	
 	declare @noa nvarchar(50)
