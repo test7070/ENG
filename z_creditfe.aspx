@@ -16,59 +16,59 @@
 		<script src="css/jquery/ui/jquery.ui.datepicker_tw.js"> </script>
 		<script type="text/javascript">
             $(document).ready(function() {
-                _q_boxClose();
                 q_getId();
-                q_gf('', 'z_ordcp');
+                q_gf('', 'z_creditfe');   
             });
-            function q_gfPost() {
-                $('#q_report').q_report({
-                    fileName : 'z_ordcp',
-                    options : [{/* [1]*/
-						type : '0',
-						name : 'accy',
-                        value : q_getId()[4] 
-                    },{/* [2]*/
-                        type : '0',
-                        name : 'xkind',
-                        value : q_getPara('ordc.kind')
-                    },{/*1 [3][4]*/
-                        type : '1',
-                        name : 'xdate'
-                    },{/*2 [5][6]*/
-                        type : '1',
-                        name : 'xnoa'
-                    },{/* [7]*/
-                        type : '0',
-                        name : 'xproject',
-                        value : q_getPara('sys.project').toUpperCase()
-                    },{/* [8]*/
-                        type : '0',
-                        name : 'isspec',
-                        value : q_getPara('sys.isspec')
+
+			function q_gfPost() {
+				$('#q_report').q_report({
+					fileName : 'z_creditfe',
+					options : [{/*[1][2]*///1
+                        type : '2',
+                        name : 'cust',
+                        dbf : 'cust',
+                        index : 'noa,comp',
+                        src : 'cust_b.aspx'
+                    }, {/*[3][4]*///2
+                        type : '2',
+                        name : 'group',
+                        dbf : 'cust',
+                        index : 'noa,comp',
+                        src : 'cust_b.aspx'
                     }]
                 });
                 q_popAssign();
                 q_getFormat();
                 q_langShow();
-                $('#txtXdate1').mask('999/99/99');
-                $('#txtXdate1').datepicker();
-                $('#txtXdate2').mask('999/99/99');
-                $('#txtXdate2').datepicker();
-                 var t_key = q_getHref();
-                if(t_key[1] != undefined){
-                	$('#txtXnoa1').val(t_key[1]);
-                	$('#txtXnoa2').val(t_key[1]);
+                
+                var t_para = new Array();
+	            try{
+	            	t_para = JSON.parse(q_getId()[3]);
+	            }catch(e){
+	            }    
+	            if(t_para.length==0 || t_para.custno==undefined){
+	            	
+	            }else{
+	            	$('#txtCust1a').val(t_para.custno);
+        			$('#txtCust2a').val(t_para.custno);
+	            	q_gt('cust', "where=^^ noa='"+t_para.custno+"'^^", 1, 1, 0, 'initCust', r_accy);
+	            	
+	            }
+            }
+            function q_gtPost(t_name) {
+                switch (t_name) {
+                	case 'initCust':
+                		var as = _q_appendData("cust", "", true);
+						if (as[0] != undefined) {
+							$('#txtCust1b').val(as[0].comp);
+	            			$('#txtCust2b').val(as[0].comp);
+						}
+                        break;
                 }
-            }
-
-            function q_boxClose(s2) {
-            }
-
-            function q_gtPost(s2) {
             }
 		</script>
 	</head>
-	<body id="z_accc" ondragstart="return false" draggable="false"
+	<body ondragstart="return false" draggable="false"
 	ondragenter="event.dataTransfer.dropEffect='none'; event.stopPropagation(); event.preventDefault();"
 	ondragover="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();"
 	ondrop="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();">

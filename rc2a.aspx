@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
 	<head>
 		<title> </title>
@@ -149,11 +149,7 @@
                 q_getFormat();
                 bbmMask = [['txtDatea', r_picd], ['txtMon', r_picm]];
                 q_mask(bbmMask);
-                
-                if(q_getPara('sys.project')=='sh')
-                	q_cmbParse("cmbTaxtype",q_getPara('sys.taxtype'));
-                else 
-                	q_cmbParse("cmbTaxtype",q_getPara('vcca.taxtype'));
+                q_cmbParse("cmbTaxtype", q_getPara('sys.taxtype'));
                 
                 $('#cmbTaxtype').focus(function() {
                     var len = $("#cmbTaxtype").children().length > 0 ? $("#cmbTaxtype").children().length : 1;

@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
 	<head>
 		<title> </title>
@@ -15,17 +15,14 @@
 		<script src="css/jquery/ui/jquery.ui.datepicker_tw.js"></script>
 		<script type="text/javascript">
 
-			q_tables = 't';
+			q_tables = 's';
 			var q_name = "vcca";
 			var q_readonly = ['txtMoney', 'txtTotal', 'txtChkno', 'txtTax', 'txtAccno', 'txtWorker', 'txtTrdno', 'txtVccno'];
 			var q_readonlys = [];
-			var q_readonlyt = ['txtVccaccy','txtVccno','txtVccnoq'];
 			var bbmNum = [['txtMoney', 15, 0,1], ['txtTax', 15, 0,1], ['txtTotal', 15, 0,1]];
 			var bbsNum = [['txtMount', 15, 3,1], ['txtGmount', 15, 4,1], ['txtEmount', 15, 4,1], ['txtPrice', 15, 3,1], ['txtTotal', 15, 0,1]];
-			var bbtNum = [['txtMount', 15, 0, 1],['txtWeight', 15, 2, 1],['txtPrice', 15, 2, 1],['txtMoney', 15, 0, 1]];
 			var bbmMask = [];
 			var bbsMask = [];
-			var bbtMask = [];
 			q_sqlCount = 6;
 			brwCount = 6;
 			brwList = [];
@@ -34,7 +31,7 @@
 			aPop = new Array(['txtCno', 'lblAcomp', 'acomp', 'noa,acomp', 'txtCno,txtAcomp', 'acomp_b.aspx']
 			, ['txtAddress', '', 'view_road', 'memo,zipcode', '0txtAddress,txtZip', 'road_b.aspx']
 			, ['txtCustno', 'lblCust', 'cust', 'noa,comp,nick,serial,zip_invo,addr_invo', 'txtCustno,txtComp,txtNick,txtSerial,txtZip,txtAddress', 'cust_b.aspx']
-			, ['txtBuyerno', 'lblBuyer', 'cust', 'noa,comp,serial', '0txtBuyerno,txtBuyer,txtSerial,txtMemo', 'cust_b.aspx']
+			, ['txtBuyerno', 'lblBuyer', 'cust', 'noa,comp,serial', 'txtBuyerno,txtBuyer,txtSerial,txtMemo', 'cust_b.aspx']
 			, ['txtSerial', 'lblSerial', 'vccabuyer', 'serial,noa,buyer', '0txtSerial,txtBuyerno,txtBuyer', 'vccabuyer_b.aspx']
 			, ['txtProductno_', 'btnProductno_', 'ucca', 'noa,product,unit', 'txtProductno_,txtProduct_,txtUnit_', 'ucca_b.aspx']);
 			q_xchg = 1;
@@ -103,7 +100,7 @@
 				q_getFormat();
 				bbmMask = [['txtDatea', r_picd], ['txtMon', r_picm]];
 				q_mask(bbmMask);
-				q_cmbParse("cmbTaxtype", q_getPara('vcca.taxtype'));
+				q_cmbParse("cmbTaxtype", q_getPara('sys.taxtype'));
 				
 				if(q_getPara('sys.project').toUpperCase()=='VU')
 					$('#chkAtax').show();
@@ -692,6 +689,15 @@
 			}
 			
 			function sum_xy() {
+				//讀取發票聯式
+				var t_where = " where=^^ '" + $('#txtNoa').val() + "' between binvono and einvono ^^";
+				q_gt('vccar', t_where, 0, 0, 0, 'getcust', r_accy,1);
+				var as = _q_appendData("vccar", "", true);
+				var tp23='';
+				if (as[0] != undefined) {
+					tp23=as[0].rev;
+				}
+				
 				$('#txtTax').css('color', 'green').css('background', 'RGB(237,237,237)').attr('readonly', 'readonly');
 				var t_mounts, t_prices, t_moneys=0, t_mount = 0, t_money = 0, t_taxrate=0.5, t_tax=0, t_total=0;
 				if (!emp($('#txtVccno').val())){
@@ -700,7 +706,8 @@
 					//買受人
 					$('#txtBuyerno').attr('readonly', false);
 					$('#txtBuyer').attr('readonly', false);
-					$('#cmbTaxtype').attr('disabled','disabled');
+					if(r_rank<5)
+						$('#cmbTaxtype').attr('disabled','disabled');
 					$('#txtNoa').attr('disabled','disabled');
 					//銷貨客戶
 					$('#txtCustno').attr('readonly', true);
@@ -748,8 +755,12 @@
 						if($('#chkAtax').prop('checked')){
 							t_tax=round(q_float('txtTax'), 0);
 							$('#txtTax').css('color', 'black').css('background', 'white').removeAttr('readonly');  
-						}else
-							t_tax = round(t_money * t_taxrate, 0);
+						}else{
+							if(tp23=='2') //二聯式發票
+								t_tax = 0;
+							else
+								t_tax = round(t_money * t_taxrate, 0);
+						}
 						t_total = t_money + t_tax;
 						break;
 					case '2':
@@ -1122,7 +1133,32 @@
 	ondragover="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();"
 	ondrop="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();"
 	>
-		<!--#include file="../inc/toolbar.inc"-->
+		<div id="toolbar">
+  <div id="q_menu"></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <input id="btnXchg" type="button" style="display:none;background:url(../image/xchg_24.png) no-repeat;width:28px;height:26px"/>
+  <a id='lblQcopy' style="display:none;"></a>
+  <input id="chekQcopy" type="checkbox" style="display:none;"/>
+  <input id="btnIns" type="button"/>
+  <input id="btnModi" type="button"/>
+  <input id="btnDele" type="button"/>
+  <input id="btnSeek" type="button"/>
+  <input id="btnPrint" type="button"/>
+  <input id="btnPrevPage" type="button"/>
+  <input id="btnPrev" type="button"/>
+  <input id="btnNext" type="button"/>
+  <input id="btnNextPage" type="button"/>
+  <input id="btnOk" type="button" disabled="disabled" />&nbsp;&nbsp;&nbsp;
+  <input id="btnCancel" type="button" disabled="disabled"/>&nbsp;
+  <input id="btnAuthority" type="button" />&nbsp;&nbsp;
+  <span id="btnSign" style="text-decoration: underline;"></span>&nbsp;&nbsp;
+  <span id="btnAsign" style="text-decoration: underline;"></span>&nbsp;&nbsp;
+  <span id="btnLogout" style="text-decoration: underline;color:orange;"></span>&nbsp;&nbsp;
+  <input id="pageNow" type="text"  style="position: relative;text-align:center;"  size="2"/> /
+  <input id="pageAll" type="text"  style="position: relative;text-align:center;"  size="2"/>
+  </div>
+  <div id="q_acDiv"></div>
+</div>
 		<div id="dmain">
 			<div class="dview" id="dview">
 				<table class="tview" id="tview">
@@ -1279,42 +1315,5 @@
 			</table>
 		</div>
 		<input id="q_sys" type="hidden" />
-		<div id="dbbt" style="display:none;">
-			<table id="tbbt">
-				<tbody>
-					<tr class="head" style="color:white; background:#003366;">
-						<td style="width:20px;">
-						<input id="btnPlut" type="button" style="font-size: medium; font-weight: bold;" value="＋"/>
-						</td>
-						<td style="width:20px;"> </td>
-						<td style="width:120px; text-align: center;">出貨單號</td>
-						<td style="width:200px; text-align: center;">品名</td>
-						<td style="width:100px; text-align: center;">數量<BR><a id='lblTot_mount'> </a></td>
-						<td style="width:100px; text-align: center;">重量<BR><a id='lblTot_weight'> </a></td>
-						<td style="width:100px; text-align: center;">單價</td>
-						<td style="width:100px; text-align: center;">金額<BR><a id='lblTot_money'> </a></td>
-					</tr>
-					<tr>
-						<td>
-							<input id="btnMinut..*"  type="button" style="font-size: medium; font-weight: bold;" value="－"/>
-							<input class="txt" id="txtNoq..*" type="text" style="display: none;"/>
-						</td>
-						<td><a id="lblNo..*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
-						<td>
-							<input class="txt" id="txtVccaccy..*" type="text" style="width:95%;display:none;"/>
-							<input class="txt" id="txtVccno..*" type="text" style="width:75%;float:left;"/>
-							<input class="txt" id="txtVccnoq..*" type="text" style="width:15%;float:left;"/>
-						</td>
-						<td>
-							<input class="txt" id="txtProduct..*" type="text" style="width:95%;float:left;"/>
-						</td>
-						<td><input class="txt" id="txtMount..*" type="text" style="width:95%;text-align: right;"/></td>
-						<td><input class="txt" id="txtWeight..*" type="text" style="width:95%;text-align: right;"/></td>
-						<td><input class="txt" id="txtPrice..*" type="text" style="width:95%;text-align: right;"/></td>
-						<td><input class="txt" id="txtMoney..*" type="text" style="width:95%;text-align: right;"/></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
 	</body>
 </html>
