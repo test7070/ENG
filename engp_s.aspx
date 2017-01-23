@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title></title>
+		<title> </title>
 		<script src="../script/jquery.min.js" type="text/javascript"></script>
 		<script src='../script/qj2.js' type="text/javascript"></script>
 		<script src='qset.js' type="text/javascript"></script>
@@ -10,8 +10,11 @@
 		<script src='../script/mask.js' type="text/javascript"></script>
 		<link href="../qbox.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript">
-			var q_name = "engo_s";
-			aPop = new Array();
+			var q_name = "engp_s";
+			aPop = new Array(
+				['txtTggno', '', 'tgg', 'noa,comp', '0txtTggno,txtComp', 'tgg_b.aspx']
+				,['txtEngno', '', 'eng', 'noa,eng', '0txtEngno,txtEng', 'eng_b.aspx']
+			);
 			$(document).ready(function() {
 				main();
 			});
@@ -38,7 +41,7 @@
 				t_edate = $('#txtEdate').val();
 				t_engno = $('#txtEngno').val();
 				t_eng = $('#txtEng').val();
-				t_custno = $('#txtCustno').val();
+				t_tggno = $('#txtTggno').val();
 				t_comp = $('#txtComp').val();
 				t_contract = $('#txtContract').val();
 
@@ -48,7 +51,7 @@
 				/// 100.  .
 
 				var t_where = " 1=1 " + q_sqlPara2("noa", t_noa) + q_sqlPara2("datea", t_bdate, t_edate) 
-				+ q_sqlPara2("engno", t_engno) + q_sqlPara2("eng", t_eng) + q_sqlPara2("custno", t_custno) 
+				+ q_sqlPara2("engno", t_engno) + q_sqlPara2("eng", t_eng) + q_sqlPara2("tggno", t_tggno)
 				+ q_sqlPara2("comp", t_comp) + q_sqlPara2("contract", t_contract);
 
 				t_where = ' where=^^' + t_where + '^^ ';
@@ -91,9 +94,9 @@
 					</td>
 				</tr>
 				<tr class='seek_tr'>
-					<td class='seek'  style="width:20%;"><a id='lblCust'> </a></td>
+					<td class='seek'  style="width:20%;"><a id='lblTgg'> </a></td>
 					<td>
-						<input class="txt" id="txtCustno" type="text" style="width:90px; font-size:medium;" />&nbsp;
+						<input class="txt" id="txtTggno" type="text" style="width:90px; font-size:medium;" />&nbsp;
 						<input class="txt" id="txtComp" type="text" style="width:115px; font-size:medium;" />
 					</td>
 				</tr>
