@@ -34,7 +34,8 @@
             brwNowPage = 0;
             brwKey = 'Datea';
             aPop = new Array(
-            	['txtCustno','lblCustno','comp','noa,nick','txtCustno,txtCust','cust_b.aspx']
+            	['txtEngno','lblEng','eng','noa,eng,custno,cust','txtEngno,txtEng,txtCustno,txtComp','eng_b.aspx'],
+            	['txtCustno','lblCust','cust','noa,nick','txtCustno,txtComp','cust_b.aspx']
             );
 
             $(document).ready(function() {

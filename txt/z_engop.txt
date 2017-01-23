@@ -29,7 +29,7 @@ declare @result table(
 	,ROW_NUMBER() over (partition by a.noa order by a.noa,b.no2)
 	,b.product,b.unit,b.mount,b.price,b.money,0
 	from engo a left join engos b on a.noa=b.noa
-	where a.engno=@t_engno
+	where (a.engno=@t_engno or len(@t_engno)=0)
 	
 	declare @noa nvarchar(50)
 	declare @tpage int
