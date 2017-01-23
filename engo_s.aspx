@@ -40,6 +40,7 @@
 				t_eng = $('#txtEng').val();
 				t_custno = $('#txtCustno').val();
 				t_comp = $('#txtComp').val();
+				t_contract = $('#txtContract').val();
 
 				t_bdate = t_bdate.length > 0 && t_bdate.indexOf("_") > -1 ? t_bdate.substr(0, t_bdate.indexOf("_")) : t_bdate;
 				/// 100.  .
@@ -47,7 +48,8 @@
 				/// 100.  .
 
 				var t_where = " 1=1 " + q_sqlPara2("noa", t_noa) + q_sqlPara2("datea", t_bdate, t_edate) 
-				+ q_sqlPara2("engno", t_engno) + q_sqlPara2("eng", t_eng) + q_sqlPara2("custno", t_custno) + q_sqlPara2("comp", t_comp);
+				+ q_sqlPara2("engno", t_engno) + q_sqlPara2("eng", t_eng) + q_sqlPara2("custno", t_custno) 
+				+ q_sqlPara2("comp", t_comp) + q_sqlPara2("contract", t_contract);
 
 				t_where = ' where=^^' + t_where + '^^ ';
 				return t_where;
@@ -66,11 +68,11 @@
 		<div style='width:400px; text-align:center;padding:15px;' >
 			<table id="seek"  border="1"   cellpadding='3' cellspacing='2' style='width:100%;' >
 				<tr class='seek_tr'>
-					<td   style="width:35%;" ><a id='lblDatea'></a></td>
+					<td   style="width:35%;" ><a id='lblDatea'> </a></td>
 					<td style="width:65%;  ">
-					<input class="txt" id="txtBdate" type="text" style="width:90px; font-size:medium;" />
-					<span style="display:inline-block; vertical-align:middle">&sim;</span>
-					<input class="txt" id="txtEdate" type="text" style="width:93px; font-size:medium;" />
+						<input class="txt" id="txtBdate" type="text" style="width:90px; font-size:medium;" />
+						<span style="display:inline-block; vertical-align:middle">&sim;</span>
+						<input class="txt" id="txtEdate" type="text" style="width:93px; font-size:medium;" />
 					</td>
 				</tr>
 				<tr class='seek_tr'>
@@ -78,19 +80,21 @@
 					<td><input class="txt" id="txtNoa" type="text" style="width:215px; font-size:medium;" /></td>
 				</tr>
 				<tr class='seek_tr'>
+					<td class='seek'  style="width:20%;"><a id='lblContract'> </a></td>
+					<td><input class="txt" id="txtContract" type="text" style="width:215px; font-size:medium;" /></td>
+				</tr>
+				<tr class='seek_tr'>
 					<td class='seek'  style="width:20%;"><a id='lblEng'> </a></td>
 					<td>
-					<input class="txt" id="txtEngno" type="text" style="width:90px; font-size:medium;" />
-					&nbsp;
-					<input class="txt" id="txtEng" type="text" style="width:115px;font-size:medium;" />
+						<input class="txt" id="txtEngno" type="text" style="width:90px; font-size:medium;" />&nbsp;
+						<input class="txt" id="txtEng" type="text" style="width:115px;font-size:medium;" />
 					</td>
 				</tr>
 				<tr class='seek_tr'>
 					<td class='seek'  style="width:20%;"><a id='lblCust'> </a></td>
 					<td>
-					<input class="txt" id="txtCustno" type="text" style="width:90px; font-size:medium;" />
-					&nbsp;
-					<input class="txt" id="txtComp" type="text" style="width:115px; font-size:medium;" />
+						<input class="txt" id="txtCustno" type="text" style="width:90px; font-size:medium;" />&nbsp;
+						<input class="txt" id="txtComp" type="text" style="width:115px; font-size:medium;" />
 					</td>
 				</tr>
 			</table>

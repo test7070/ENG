@@ -231,7 +231,7 @@
             function _btnSeek() {
                 if (q_cur > 0 && q_cur < 4)// 1-3
                     return;
-                q_box('engp_s.aspx', q_name + '_s', "500px", "330px", q_getMsg("popSeek"));
+                q_box('engp_s.aspx', q_name + '_s', "500px", "350px", q_getMsg("popSeek"));
             }
 
             function bbsAssign() {
@@ -478,7 +478,6 @@
                 		for (var i = 0; i < q_bbtCount; i++) {
 	                		for (var j=0;j<as.length;j++){
 	                			if(as[j].no2==$('#txtNo2_'+i).val() && $('#txtNoa').val()==as[j].noa){
-	                				$('#txtOmoney_'+i).val(FormatNumber(as[j].omoney));
 	                				$('#txtCost_'+i).val(FormatNumber(as[j].cost));
 									break;
 								}
@@ -607,7 +606,7 @@
                 color: blue;
                 /*background: #cad3ff;*/
                 background: lightgrey;
-                width: 2200px;
+                width: 1550px;
             }
             .dbbs .tbbs tr {
                 height: 35px;
@@ -821,7 +820,7 @@
 						<td align="center" style="width:90px;"><a id='lblEdate_s'> </a></td>
 						<td align="center" style="width:110px;"><a id='lblChase_s'> </a></td>
 						<td align="center" style="width:110px;"><a id='lblCost_s'> </a></td>
-						<td align="center" style="width:30px;"><a id='lblRecord_s'> </a></td>
+						<td align="center" style="width:40px;"><a id='lblRecord_s'> </a></td>
 					</tr>
 					<tr  style='background:#cad3ff;'>
 						<td ><input class="btn"  id="btnMinus.*" type="button" value='－' style=" font-weight: bold;" /></td>
