@@ -34,14 +34,14 @@
                         for ( i = 0; i < as.length; i++) {
                             acompItem = acompItem + (acompItem.length > 0 ? ',' : '') + as[i].noa + '@' + as[i].acomp;
                         }
-                        q_gf('', 'z_engop');
+                        q_gf('', 'z_engpp');
                         break;
                 }
             }
             
             function q_gfPost() {
                 $('#q_report').q_report({
-                    fileName : 'z_engop',
+                    fileName : 'z_engpp',
                     options : [{
                         type : '0', //[1] 
                         name : 'accy',
@@ -74,10 +74,10 @@
                         name : 'xdate'
                     }, {
                         type : '2', //[10][11]//4
-                        name : 'xcust',
-                        dbf : 'cust',
+                        name : 'xtgg',
+                        dbf : 'tgg',
                         index : 'noa,comp',
-                        src : 'cust_b.aspx'
+                        src : 'tgg_b.aspx'
                     }]
                 });
                 q_popAssign();
