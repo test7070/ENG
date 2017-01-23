@@ -135,8 +135,8 @@
 							q_gt('ordc', t_where, 0, 0, 0, "", r_accy);
 
 							$('#txtOrdcno').val(b_ret[0].noa);
-							ret = q_gridAddRow(bbsHtm, 'tbbs', 'txtProductno,txtProduct,txtUnit,txtMount,txtPrice,txtTotal,txtMemo,txtOrdeno,txtNo2,txtEngno,txtEngono,txtEngono2'
-							, b_ret.length, b_ret, 'productno,product,unit,mount,price,total,memo,noa,no2,engno,engono,engono2', 'txtProductno,txtProduct');
+							ret = q_gridAddRow(bbsHtm, 'tbbs', 'txtProductno,txtProduct,txtUnit,txtMount,txtPrice,txtTotal,txtMemo,txtOrdeno,txtNo2,txtEngno'//,txtEngono,txtEngono2
+							, b_ret.length, b_ret, 'productno,product,unit,mount,price,total,memo,noa,no2,engno', 'txtProductno,txtProduct');//,engono,engono2
 							bbsAssign();
 							sum();
 						}
@@ -778,8 +778,8 @@
 						<input id="txtNo2.*" type="text" class="txt" style="width:25%;" />
 						<input id="recno.*" style="display:none;"/>
 						<input id="txtNoq.*" type="text" class="txt c1" style="display:none;"/>
-						<input id="txtEngono.*" type="text" style="display:none;" />
-						<input id="txtEngono2.*" type="text" style="display:none;" />
+						<!--<input id="txtEngono.*" type="text" style="display:none;" />
+						<input id="txtEngono2.*" type="text" style="display:none;" />-->
 					</td>
 					<!--<td align="center"><input class="btn" id="btnRecord.*" type="button" value='.' style=" font-weight: bold;" /></td>-->
 				</tr>
