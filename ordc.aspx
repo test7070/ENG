@@ -95,10 +95,22 @@
                 $('#btnEngos').click(function() {
                     var t_engno = trim($('#txtEngno').val());
                     var t_noa = trim($('#txtNoa').val());
-
-                    var t_where = " exists (select * from engo where noa=engos.noa and engno='"+t_engno+"' ) ";
-                    t_where =t_where+ " and not exists (select * from view_ordcs where engono=engos.noa and engono2=engos.no2  and noa!='"+t_noa+"' ) ";
-                    q_box("engos_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";;" + r_accy , 'engos;' + t_where, "95%", "650px", q_getMsg('popEngos'));
+                    var t_kind = trim($('#cmbKind').val());
+                    
+                    if(t_kind=='1'){
+                    	var t_where = "1=1";
+                    	if(t_engno.length>0)
+                    		t_where =t_where+ " and exists (select * from engo where noa=engos.noa and engno='"+t_engno+"' ) ";
+	                    t_where =t_where+ " and not exists (select * from view_ordcs where engono=engos.noa and engono2=engos.no2  and noa!='"+t_noa+"' ) ";
+                    	q_box("engos_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";;" + r_accy , 'engos;' + t_where, "95%", "650px", q_getMsg('popEngos'));
+                    		
+                    }else{
+                    	var t_where = "1=1";
+                    	if(t_engno.length>0)
+                    		t_where =t_where+ " and exists (select * from engp where noa=engps.noa and engno='"+t_engno+"' ) ";
+	                    t_where =t_where+ " and not exists (select * from view_ordcs where engono=engps.noa and engono2=engps.no2  and noa!='"+t_noa+"' ) ";
+                    	q_box("engps_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";;" + r_accy , 'engps;' + t_where, "95%", "650px", q_getMsg('popEngps'));
+                    }
                 });
             }
 
@@ -107,6 +119,22 @@
                 ret;
                 switch (b_pop) {
                     case 'engos':
+                        if (q_cur > 0 && q_cur < 4) {
+                            b_ret = getb_ret();
+                            if (!b_ret || b_ret.length == 0)
+                                return;
+
+                            for (var j = 0; j < q_bbsCount; j++) {
+                                $('#btnMinus_' + j).click();
+                            }
+
+                            ret = q_gridAddRow(bbsHtm, 'tbbs', 'txtProductno,txtProduct,txtUnit,txtPrice,txtMount,txtTotal,txtMemo,txtEngono,txtEngono2,txtEngno'
+                            , b_ret.length, b_ret, 'productno,product,unit,price,mount,money,memo,noa,no2,engno', 'txtProductno,txtProduct');
+                            /// 最後 aEmpField 不可以有【數字欄位】
+                            bbsAssign();
+                        }
+                        break;
+					case 'engps':
                         if (q_cur > 0 && q_cur < 4) {
                             b_ret = getb_ret();
                             if (!b_ret || b_ret.length == 0)
