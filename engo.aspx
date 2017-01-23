@@ -39,7 +39,11 @@
             brwNowPage = 0;
             brwKey = 'Datea';
             brwCount2 = 10;
-            aPop = new Array(['txtTggno_', '', 'tgg', 'noa,comp', 'txtTggno_,txtTgg_', 'tgg_b.aspx']);
+            aPop = new Array(
+            	['txtEngno','lblEng','eng','noa,eng,custno,cust','txtEngno,txtEng,txtCustno,txtComp','eng_b.aspx'],
+            	['txtCustno','lblCust','cust','noa,nick','txtCustno,txtComp','cust_b.aspx'],
+            	['txtTggno_', '', 'tgg', 'noa,comp', 'txtTggno_,txtTgg_', 'tgg_b.aspx']
+            );
 
             $(document).ready(function() {
                 bbmKey = ['noa'];
@@ -233,7 +237,7 @@
             function _btnSeek() {
                 if (q_cur > 0 && q_cur < 4)// 1-3
                     return;
-                q_box('engo_s.aspx', q_name + '_s', "500px", "330px", q_getMsg("popSeek"));
+                q_box('engo_s.aspx', q_name + '_s', "500px", "350px", q_getMsg("popSeek"));
             }
 
             function bbsAssign() {
@@ -737,7 +741,7 @@
 						<td><input id="txtNoa" type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
-						<td><span> </span><a id='lblEng' class="lbl"> </a></td>
+						<td><span> </span><a id='lblEng' class="lbl btn"> </a></td>
 						<td colspan="3">
 							<input id="txtEngno"  type="text" class="txt" style="width:30%; float: left;"/>
 							<input id="txtEng"  type="text" class="txt" style="width:70%; float: left;"/>
@@ -747,7 +751,7 @@
 						<td><input id="btnEngqno" type="button" /></td>-->
 					</tr>
 					<tr>
-						<td><span> </span><a id='lblCust' class="lbl"> </a></td>
+						<td><span> </span><a id='lblCust' class="lbl btn"> </a></td>
 						<td colspan="3">
 							<input id="txtCustno"  type="text" class="txt" style="width:30%; float: left;"/>
 							<input id="txtComp"  type="text" class="txt" style="width:70%; float: left;"/>
