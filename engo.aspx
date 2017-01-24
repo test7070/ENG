@@ -278,10 +278,8 @@
                 for (var i = 0; i < q_bbtCount; i++) {
                     $('#lblNo__' + i).text(i + 1);
                     if (!$('#btnMinut__' + i).hasClass('isAssign')) {
-                    	$('#txtFilename__' + i).bind('contextmenu', function(e) {
-                            /*滑鼠右鍵*/
-                            e.preventDefault();
-                            var n = $(this).attr('id').replace('txtFilename__', '');
+                    	$('#lblDownload__' + i).click(function(e) {
+                            var n = $(this).attr('id').replace('lblDownload__', '');
                         	var t_filename = escape($('#txtFilename__'+n).val());
                         	var t_tempname = escape($('#txtTempname__'+n).val());
                         	if(t_filename.length>0 && t_tempname.length>0)
@@ -346,10 +344,21 @@
 									oReq.send(fr.result);
 							    };
 							}
+							ShowDownloadlink();
 						});
                     }
                 }
                 _bbtAssign();
+                ShowDownloadlink();
+                if(q_cur==1 || q_cur==2){
+                	for (var i = 0; i < q_bbtCount; i++) {
+                		$('#btnUpload__'+i).removeAttr('disabled');
+                	}
+                }else{
+                	for (var i = 0; i < q_bbtCount; i++) {
+                		$('#btnUpload__'+i).attr('disabled','disabled');
+                	}
+                }
             }
 
             function btnIns() {
@@ -516,6 +525,15 @@
 				return xx + arr[0].replace(re, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
 			}
 			
+			function ShowDownloadlink() {
+				for (var i = 0; i < q_bbtCount; i++) {
+                	if(!emp($('#txtTempname__'+i).val())){
+                		$('#lblDownload__'+i).show();
+                	}else{
+                		$('#lblDownload__'+i).hide();
+                	}
+                }
+			}
 		</script>
 		<style type="text/css">
             #dmain {
@@ -639,7 +657,7 @@
                 font-size: medium;
             }
             #dbbt {
-                width: 900px;
+                width: 1000px;
             }
             #tbbt {
                 margin: 0;
@@ -666,6 +684,12 @@
                 border: 5px solid gray;
                 position: absolute;
                 z-index: 50;
+            }
+            #tbbt .lbl.btn {
+                color: #4297D7;
+                font-weight: bolder;
+                font-size: medium;
+                cursor: pointer;
             }
 		</style>
 	</head>
@@ -886,7 +910,7 @@
 					<td style="width:20px;"><input id="btnPlut" type="button" style="font-size: medium; font-weight: bold;" value="＋"/></td>
 					<td style="width:20px;"> </td>
 					<td style="width:300px; text-align: center;"><a id='lblCondition_t'> </a></td>
-					<td style="width:300px; text-align: center;"><a id='lblFilename_t'> </a></td>
+					<td style="width:460px; text-align: center;"><a id='lblFilename_t'> </a></td>
 					<td style="width:200px; text-align: center;"><a id='lblMemo_t'> </a></td>
 				</tr>
 				<tr>
@@ -899,6 +923,7 @@
 					<td>
 						<input class="txt" id="txtFilename..*" type="text" style="width:40%;float:left;"/>
 						<input type="file" id="btnUpload..*" value="上傳" class="btnUpload" style="width:50%;float:left;"/>
+						<a id="lblDownload..*" class="lbl btn" style="display: none;">下載</a>
 						<input class="txt" id="txtTempname..*" type="text" style="display:none;"/>
 					</td>
 					<td><input class="txt" id="txtMemo..*" type="text" style="width:95%;" /></td>
