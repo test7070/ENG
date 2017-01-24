@@ -405,8 +405,14 @@
                 _readonly(t_para, empty);
                 if(t_para){
                 	$('#btnChgprice').attr('disabled','disabled');
+                	for (var i = 0; i < q_bbtCount; i++) {
+                		$('#btnUpload__'+i).attr('disabled','disabled');
+                	}
                 }else{
                 	$('#btnChgprice').removeAttr('disabled');
+                	for (var i = 0; i < q_bbtCount; i++) {
+                		$('#btnUpload__'+i).removeAttr('disabled');
+                	}
                 }
                 $('#div_chgprice').hide();
             }
