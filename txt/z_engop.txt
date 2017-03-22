@@ -5,7 +5,7 @@ declare @t_engno nvarchar(30)
 set @t_cno = case when '#non' = [6] then '' else [6] end
 set @t_engno = case when '#non'=[7] then '' else [7] end
 -------------------------------------------------------------------------------------------------------------------------
-declare @pageline int=32
+declare @pageline int=31
 
 declare @result table(
 	gno nvarchar(1),
