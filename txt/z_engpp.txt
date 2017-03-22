@@ -1,0 +1,75 @@
+z_engpp1:--z_engpp1
+declare @t_cno nvarchar(20)
+declare @t_engno nvarchar(30)
+
+set @t_cno = case when '#non' = [6] then '' else [6] end
+set @t_engno = case when '#non'=[7] then '' else [7] end
+-------------------------------------------------------------------------------------------------------------------------
+declare @pageline int=32
+
+declare @result table(
+	gno nvarchar(1),
+	noa nvarchar(50),
+	no2 nvarchar(50),
+	datea nvarchar(50),
+	engno nvarchar(50),
+	engname nvarchar(100),
+	comp nvarchar(100),
+	
+	recno int,
+	product nvarchar(100),
+	unit nvarchar(50),
+	mount float,
+	price float,
+	money float,
+	tpage int
+)
+
+	insert into @result
+	select '0',a.noa,b.no2,a.datea,a.engno,a.eng,a.comp
+	,ROW_NUMBER() over (partition by a.noa order by a.noa,b.no2)
+	,b.product,b.unit,b.mount,b.price,b.money,0
+	from engp a left join engps b on a.noa=b.noa
+	where a.engno=@t_engno
+	
+	declare @noa nvarchar(50)
+	declare @tpage int
+	declare @tcount int
+	
+	if((select count(*) from @result)>0)
+	begin
+	
+		insert @result (gno,noa,recno,money,tpage,datea,engno,engname,comp)
+		select '2',noa,MAX(recno)+1,sum(money),0,MAX(datea),MAX(engno),MAX(engname),MAX(comp)
+		from @result group by noa
+		
+		update @result set tpage=CEILING(cast(recno as float)/@pageline) 
+	
+		declare cursor_table cursor for
+			select noa,MAX(tpage),count(*) from @result group by noa
+		open cursor_table
+		fetch next from cursor_table
+		into @noa,@tpage,@tcount
+		while(@@FETCH_STATUS <> -1)
+		begin
+			while(@tcount%@pageline>0)
+			begin
+				insert @result (gno,noa,recno,tpage)
+				select '1',@noa,9999,@tpage
+				
+				set @tcount=@tcount+1
+			end
+			fetch next from cursor_table
+			into @noa,@tpage,@tcount
+		end
+		close cursor_table
+		deallocate cursor_table	
+	end
+	
+	select 
+	dbo.getComma(mount,[2]) mount
+	,dbo.getComma(price,[4]) price
+	,dbo.getComma(money,0) money
+	,* from @result order by noa,gno,tpage,recno,no2
+;
+--**************************************************************************************************
