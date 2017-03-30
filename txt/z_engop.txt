@@ -5,7 +5,7 @@ declare @t_engno nvarchar(30)
 set @t_cno = case when '#non' = [6] then '' else [6] end
 set @t_engno = case when '#non'=[7] then '' else [7] end
 -------------------------------------------------------------------------------------------------------------------------
-declare @pageline int=32
+declare @pageline int=31
 
 declare @result table(
 	gno nvarchar(1),
@@ -14,6 +14,7 @@ declare @result table(
 	datea nvarchar(50),
 	engno nvarchar(50),
 	engname nvarchar(100),
+	cust nvarchar(100),
 	
 	recno int,
 	product nvarchar(100),
@@ -25,7 +26,7 @@ declare @result table(
 )
 
 	insert into @result
-	select '0',a.noa,b.no2,a.datea,a.engno,a.eng
+	select '0',a.noa,b.no2,a.datea,a.engno,a.eng,a.comp
 	,ROW_NUMBER() over (partition by a.noa order by a.noa,b.no2)
 	,b.product,b.unit,b.mount,b.price,b.money,0
 	from engo a left join engos b on a.noa=b.noa
