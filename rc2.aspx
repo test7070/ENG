@@ -34,7 +34,8 @@
 				['txtTggno', 'lblTgg', 'tgg', 'noa,comp,paytype,trantype', 'txtTggno,txtComp,txtPaytype,cmbTrantype', 'tgg_b.aspx'],
 				['txtStoreno_', 'btnStoreno_', 'store', 'noa,store', 'txtStoreno_,txtStore_', 'store_b.aspx'],
 				['txtProductno_', 'btnProduct_', 'ucc', 'noa,product,unit', 'txtProductno_,txtProduct_,txtUnit_', 'ucc_b.aspx'],
-				['txtEngno', 'lblEng', 'engo', 'engno,eng', 'txtEngno,txtEng', 'engo_b.aspx']
+				['txtEngno', 'lblEng', 'engo', 'engno,eng', 'txtEngno,txtEng', 'engo_b.aspx'],
+				['txtCno', 'lblAcomp', 'acomp', 'noa,acomp,addr', 'txtCno,txtAcomp,txtAddr2', 'acomp_b.aspx']
 			);
 
 			$(document).ready(function() {
@@ -684,6 +685,12 @@
 						<td><span> </span><a id='lblNoa' class="lbl"> </a></td>
 						<td><input id="txtNoa" type="text" class="txt c1"/></td>
 					</tr>
+					<!--2017/05/08 廠商對帳單是以公司為主-->
+					<tr>
+						<td><span> </span><a id='lblAcomp' class="lbl btn"> </a></td>
+						<td><input id="txtCno" type="text" class="txt c1"/></td>
+						<td colspan="2"><input id="txtAcomp" type="text" class="txt c1"/></td>
+					</tr>
 					<tr>
 						<td><span> </span><a id='lblTgg' class="lbl btn"> </a></td>
 						<td><input id="txtTggno" type="text" class="txt c1" /></td>
@@ -699,9 +706,6 @@
 						<td><input id="txtMon" type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
-						<!--<td><span> </span><a id='lblAcomp' class="lbl btn"> </a></td>
-						<td><input id="txtCno" type="text" class="txt c1"/></td>
-						<td colspan="2"><input id="txtAcomp" type="text" class="txt c1"/></td>-->
 						<td><span> </span><a id='lblTrantype' class="lbl"> </a></td>
 						<td><select id="cmbTrantype" class="txt c1"> </select></td>
 						<td><span> </span><a id='lblPaytype' class="lbl"> </a></td>
