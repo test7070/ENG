@@ -1,0 +1,125 @@
+z_engo1:--z_engo1
+declare @t_beng nvarchar(30)
+declare @t_eeng nvarchar(30)
+declare @t_bedate nvarchar(20)
+declare @t_eedate nvarchar(20)
+
+set @t_beng = case when '#non'=[1] then '' else [1] end
+set @t_eeng = case when '#non'=[2] then char(255) else [2] end
+set @t_bedate = case when '#non'=[3] then '' else [3] end
+set @t_eedate = case when '#non'=[4] then char(255) else [4] end
+-------------------------------------------------------------------------------------------------------------------------
+declare @result table(
+	gno nvarchar(1),
+	noa nvarchar(50),
+	no2 nvarchar(50),
+	engno nvarchar(50),
+	eng nvarchar(50),
+	custno nvarchar(50),
+	comp nvarchar(100),
+	productno nvarchar(50),
+	product nvarchar(100),
+	bdate nvarchar(20),
+	edate nvarchar(20),
+	mount float,
+	money float,
+	et float,
+	ey float,
+	ut float,
+	uy float,
+	tggno nvarchar(50),
+	tgg nvarchar(100),
+	omoney float,
+	oet float,
+	oey float,
+	out float,
+	ouy float
+)
+
+insert @result
+select '0' gno,a.noa,b.no2,a.engno,a.eng,a.custno,left(a.comp,4) comp
+,b.productno,b.product,b.bdate,b.edate,b.mount,b.money
+,isnull(c.et,0)et ,isnull(c.ey,0) ey
+,b.mount-isnull(c.et,0)ut,b.money-isnull(c.ey,0)uy
+,b.tggno,left(b.tgg,4) tgg
+,case when isnull(b.out,0)=1 then b.omoney else null end omoney
+,case when isnull(b.out,0)=1 then isnull(d.oet,0) else null end oet
+,case when isnull(b.out,0)=1 then isnull(d.oey,0) else null end oey
+,case when isnull(b.out,0)=1 then b.mount-isnull(d.oet,0) else null end out
+,case when isnull(b.out,0)=1 then b.money-isnull(d.oey,0) else null end ouy
+from engo a left join engos b on a.noa=b.noa
+outer apply (select SUM(mount)et,SUM(money)ey from eng2s where engono=a.noa and no2=b.no2)c
+outer apply (select SUM(mount)oet,SUM(money)oey from eng3s where engono=a.noa and no2=b.no2)d
+where isnull(b.productno,'')!='' or isnull(b.product,'')!='' 
+and a.engno between @t_beng and @t_eeng
+and b.edate between @t_bedate and @t_eedate
+
+
+select 
+dbo.getComma(mount,2) mount
+,dbo.getComma(et,2) et
+,dbo.getComma(ut,2) ut
+,dbo.getComma(oet,2) oet
+,dbo.getComma(out,2) out
+,dbo.getComma(ey,0) ey
+,dbo.getComma(uy,0) uy
+,dbo.getComma(omoney,0) omoney
+,dbo.getComma(oey,0) oey
+,dbo.getComma(ouy,0) ouy
+,* 
+from @result order by noa,no2
+;
+--**************************************************************************************************
+z_engo2:--z_engo2
+declare @t_beng nvarchar(30)
+declare @t_eeng nvarchar(30)
+declare @t_bedate nvarchar(20)
+declare @t_eedate nvarchar(20)
+
+set @t_beng = case when '#non'=[1] then '' else [1] end
+set @t_eeng = case when '#non'=[2] then char(255) else [2] end
+
+declare @result table(
+	gno nvarchar(1),
+	noa nvarchar(50),
+	engno nvarchar(50),
+	engs nvarchar(50),
+	m1 float, --合約總額
+	m2 float, --請款總額
+	m3 float, --比例
+	m4 float, --外包金額
+	m5 float, --材料成本
+	m6 float, --費用
+	m7 float, --損益總額
+	m8 float --毛利
+)
+
+insert @result
+select '0' gno,a.noa,a.engno,a.eng
+,sum(b.money),isnull(c.money,0),case when isnull(sum(b.money),0)=0 then null else c.money/sum(b.money)*100 end
+,isnull(d.money,0),isnull(e.money,0),isnull(f.money,0)
+,sum(b.money)-isnull(d.money,0)-isnull(e.money,0)-isnull(f.money,0)
+,case when isnull(sum(b.money),0)=0 then null else (sum(b.money)-isnull(d.money,0)-isnull(e.money,0)-isnull(f.money,0))/sum(b.money)*100 end
+from engo a 
+outer apply (select SUM(money) money from engos where noa=a.noa)b
+outer apply (select SUM(money) money from eng2s where engono=a.noa)c
+outer apply (select SUM(money) money from eng3s where engono=a.noa)d
+outer apply (select SUM(total) money from view_rc2s where engono=a.noa)e
+outer apply (select SUM(cost) money from engow where noa=a.noa)f
+where a.engno between @t_beng and @t_eeng and a.engno!=''
+group by a.noa,a.engno,a.eng
+,c.money,d.money,d.money,e.money,f.money
+
+select 
+dbo.getComma(m1,0) m1
+,dbo.getComma(m2,0) m2
+,dbo.getComma(m3,2) m3
+,dbo.getComma(m4,0) m4
+,dbo.getComma(m5,0) m5
+,dbo.getComma(m6,0) m6
+,dbo.getComma(m7,0) m7
+,dbo.getComma(m8,2) m8
+,* 
+from @result order by noa
+;
+--**************************************************************************************************

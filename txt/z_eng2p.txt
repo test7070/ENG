@@ -1,0 +1,97 @@
+z_eng2p1:--z_eng2p1
+declare @t_cno nvarchar(20)
+declare @t_bnoa nvarchar(20)
+declare @t_enoa nvarchar(20)
+
+set @t_cno = case when '#non' = [5] then '' else [5] end
+set @t_bnoa = case when '#non'=[6] then '' else [6] end
+set @t_enoa = case when '#non'=[7] then char(255) else [7] end
+-------------------------------------------------------------------------------------------------------------------------
+declare @pageline int=20
+
+declare @result table(
+	gno nvarchar(1),
+	noa nvarchar(50),
+	noq nvarchar(50),
+	datea nvarchar(50),
+	eng nvarchar(100),
+	tcount nvarchar(50),
+	bedate nvarchar(100),
+	tax float,
+	total float,
+	
+	product nvarchar(100),
+	unit nvarchar(50),
+	price float,
+	omount float,
+	omoney float,
+	bmount float,
+	bmoney float,
+	nmount float,
+	nmoney float,
+	emount float,
+	emoney float,
+	engono nvarchar(50),
+	no2 nvarchar(50),
+	recno int,
+	tpage int
+)
+
+	insert into @result
+	select '0',a.noa,b.noq,a.datea,a.eng,'第 '+a.tcount+' 期',isnull(a.bdate,' ')+'~'+isnull(a.edate,' '),a.tax,a.total
+	,b.product,b.unit,b.price,o.mount,o.money,isnull(d.bmount,0),isnull(d.bmoney,0)
+	,isnull(b.mount,0),isnull(b.money,0),isnull(d.bmount,0)+isnull(b.mount,0),isnull(d.bmoney,0)+isnull(b.money,0)
+	,b.engono,b.no2,ROW_NUMBER() over (partition by a.noa order by a.noa,b.noq),0
+	from eng2 a left join eng2s b on a.noa=b.noa
+	outer apply (select * from engos where noa=b.engono and no2=b.no2) o
+	outer apply (select sum(bb.mount) bmount,sum(bb.money) bmoney from eng2 ba left join eng2s bb on ba.noa=bb.noa where bb.engono=b.engono and bb.no2=b.no2 and ba.datea<a.datea) d
+	where a.noa between @t_bnoa and @t_enoa
+	
+	declare @noa nvarchar(50)
+	declare @tpage int
+	declare @tcount int
+	
+	if((select count(*) from @result)>0)
+	begin
+	
+		insert @result (gno,noa,recno,omoney,bmoney,nmoney,emoney,tpage
+		,datea,eng,tcount,bedate,tax,total)
+		select '1',noa,MAX(recno)+1,sum(omoney),sum(bmoney),sum(nmoney),sum(emoney),0 
+		,MAX(datea),MAX(eng),MAX(tcount),MAX(bedate),MAX(tax) ,MAX(total)
+		from @result group by noa
+		
+		update @result set tpage=CEILING(cast(recno as float)/@pageline) 
+	
+		declare cursor_table cursor for
+			select noa,MAX(tpage),count(*) from @result group by noa
+		open cursor_table
+		fetch next from cursor_table
+		into @noa,@tpage,@tcount
+		while(@@FETCH_STATUS <> -1)
+		begin
+			while(@tcount%@pageline>0)
+			begin
+				insert @result (gno,noa,recno,tpage)
+				select '0',@noa,9999,@tpage
+				
+				set @tcount=@tcount+1
+			end
+			fetch next from cursor_table
+			into @noa,@tpage,@tcount
+		end
+		close cursor_table
+		deallocate cursor_table	
+	end
+	
+	select 
+	dbo.getComma(omount,[2]) omount
+	,dbo.getComma(omoney,0) omoney
+	,dbo.getComma(bmount,[2]) bmount
+	,dbo.getComma(bmoney,0) bmoney
+	,dbo.getComma(nmount,[2]) nmount
+	,dbo.getComma(nmoney,0) nmoney
+	,dbo.getComma(emount,[2]) emount
+	,dbo.getComma(emoney,0) emoney
+	,* from @result order by noa,gno,tpage,recno,noq
+;
+--**************************************************************************************************
