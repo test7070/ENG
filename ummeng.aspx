@@ -122,6 +122,47 @@
                 	
                 });
                 
+                 $('#btnVcc').click(function(e) {
+                    if (q_getPara('sys.project').toUpperCase()=='ENG'){
+                        if(q_cur==1 || q_cur==2){
+                            var t_engno = $.trim($('#txtEngno').val());
+                            var t_noa = $.trim($('#txtNoa').val());
+                            t_where = "where=^^ engno='" + t_engno + "'^^ ";
+                            t_where1 = "where[1]=^^ vccno=a.noa and noa!='" + t_noa + "'^^ ";
+                            q_gt('umm_eng', t_where+t_where1, 0, 0, 0, "umm_eng", r_accy);
+                        }
+                    }else{
+                        var t_noa = $.trim($('#txtNoa').val());
+                        var t_custno = $.trim($('#txtCustno').val());
+                        var t_custno2 = $.trim($('#txtCustno2').val()).replace(/\,/g,'@');
+                        var t_mon = $.trim($('#txtMon').val());
+                        if(t_custno.length==0){
+                            alert('請先輸入'+q_getMsg('lblCust')+'!!');
+                            return;
+                        }
+                        q_gt('umm_import',"where=^^['"+t_noa+"','"+t_custno+"','"+t_custno2+"','"+t_mon+"','"+q_getPara('sys.d4taxtype')+"')^^", 0, 0, 0, "umm_import");
+                        
+                    }   
+                });
+                
+                $('#btnMon').click(function(e) {
+                    if(q_cur==1 || q_cur==2){
+                        var t_noa = $.trim($('#txtNoa').val());
+                        var t_custno = $.trim($('#txtCustno').val());
+                        var t_custno2 = $.trim($('#txtCustno2').val()).replace(/\,/g,'@');
+                        var t_mon = $.trim($('#txtMon').val());
+                        if(t_custno.length==0){
+                            alert('請先輸入'+q_getMsg('lblCust')+'!!');
+                            return;
+                        }
+                        if(t_mon.length==0){
+                            alert('請先輸入'+q_getMsg('lblMon')+'!!');
+                            return;
+                        }
+                        q_gt('umm_import',"where=^^['"+t_noa+"','"+t_custno+"','"+t_custno2+"','"+t_mon+"','mon')^^", 0, 0, 0, "umm_import");
+                    }
+                });
+                
             }
 			
 			
@@ -196,6 +237,51 @@
 	                        }
 						}
 						break;
+					case 'umm_import':
+                        as = _q_appendData(t_name, "", true);
+                        for (var i = 0; i < as.length; i++) {
+                            if(q_getPara('sys.project').toUpperCase()=='ENG'){
+                                as[i].tablea='vcc_eng';
+                            }else{
+                                as[i].tablea='vcc_fe';
+                            }
+                            
+                        }
+                        q_gridAddRow(bbsHtm, 'tbbs', 'txtCno,txtCustno,txtPaymon,txtCoin,txtUnpay,txtUnpayorg,txtTablea,txtAccy,txtVccno,txtMemo2', as.length, as, 'cno,custno,mon,coin,unpay,unpay,tablea,tableaccy,vccno,memo', '', '');
+                        
+                        var t_comp = q_getPara('sys.comp').substring(0,2);
+                        for(var i=0;i<q_bbsCount;i++){
+                            if($('#txtTablea_'+i).val()=='vcc' && t_comp == "裕承"){
+                                $('#txtTablea_'+i).val('vccst');
+                            }
+                        }
+                        
+                        sum();
+                        break;
+                    case 'umm_eng':
+                        for (var i = 0; i < q_bbsCount; i++) {
+                            if ($('#txtVccno_' + i).val().length > 0) {
+                                $('#txtVccno_' + i).val('');
+                                $('#txtTablea_' + i).val('');
+                                $('#txtAccy_' + i).val('');
+                                $('#txtPaysale_' + i).val('');
+                                $('#txtUnpay_' + i).val('');
+                                $('#txtUnpayorg_' + i).val('');
+                            }
+                        }
+                        var as = _q_appendData("eng2", "", true);
+                        for (var i = 0; i < as.length; i++) {
+                            if (as[i].money - as[i].paysale == 0) {
+                                as.splice(i, 1);
+                                i--;
+                            } else {
+                                as[i].paysale = 0;
+                                as[i].paymon=q_date().substr(0,6);
+                            }
+                        }
+                        q_gridAddRow(bbsHtm, 'tbbs', 'txtVccno,txtPaysale,txtUnpay,txtUnpayorg,txtTablea,txtAccy,txtPaymon,txtMemo2', as.length, as, 'noa,paysale,unpay,unpay,tablea,tableaccy,paymon,comp', 'txtVccno', '');
+                        sum();
+                        break;
                     case q_name + '_s':
                         q_boxClose2(s2);
                         break;
